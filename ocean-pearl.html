@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منيو لؤلؤة المحيط</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --أزرق_عميق: #081B33;
+            --أزرق_المحيط: #005A92; 
+            --فيروزي_داكن: #20B2AA;
+            --رملي_ناعم: #F4F7F9;
+        }
+
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background-color: var(--رملي_ناعم); 
+            margin: 0; padding: 0;
+            color: var(--أزرق_عميق);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, .cat-box span { font-family: 'Tajawal', sans-serif; }
+
+        .marine-header {
+            background: linear-gradient(135deg, #05101E, var(--أزرق_عميق));
+            height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+            border-bottom: 5px solid var(--فيروزي_داكن);
+        }
+
+        .category-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: -40px;
+            position: sticky;
+            top: 10px;
+            z-index: 1000;
+        }
+
+        .category-nav {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 15px;
+            scrollbar-width: none;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            max-width: 95%;
+        }
+        .category-nav::-webkit-scrollbar { display: none; }
+
+        .cat-box {
+            flex: 0 0 80px;
+            height: 80px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            transition: 0.2s;
+        }
+
+        .cat-box i { font-size: 1.5rem; color: var(--أزرق_المحيط); margin-bottom: 5px; }
+        .cat-box span { font-size: 0.75rem; font-weight: 900; color: #444; }
+
+        .cat-box.active {
+            background: var(--أزرق_عميق);
+            border-color: var(--فيروزي_داكن);
+            transform: scale(1.05);
+        }
+        .cat-box.active i, .cat-box.active span { color: var(--فيروزي_داكن); }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 50px auto 100px;
+            padding: 0 20px;
+        }
+
+        .square-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .square-img { width: 100%; height: 200px; object-fit: cover; background: #f0f0f0; }
+        .square-body { padding: 18px; text-align: right; }
+        .square-body h3 { margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; font-weight: 800; }
+        .square-body h3 i { color: var(--فيروزي_داكن); }
+        .square-body p { font-size: 0.85rem; color: #666; margin: 8px 0; height: 38px; overflow: hidden; }
+
+        .footer-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 12px;
+        }
+
+        .price-tag { font-weight: 900; color: var(--أزرق_المحيط); font-size: 1.1rem; }
+        .add-btn { background: var(--أزرق_عميق); color: var(--فيروزي_داكن); width: 35px; height: 35px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+
+        @media (max-width: 768px) {
+            .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 10px; }
+            .category-nav { border-radius: 0; max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="marine-header">
+    <h1 style="font-size: 2.2rem; font-weight: 900;">منيو لؤلؤة المحيط</h1>
+</header>
+
+<div class="category-wrapper">
+    <nav class="category-nav">
+        <div class="cat-box active" onclick="showCat('seafood', this, 'fa-fish')"><i class="fas fa-fish"></i><span>البحري</span></div>
+        <div class="cat-box" onclick="showCat('grill', this, 'fa-fire')"><i class="fas fa-fire"></i><span>المشويات</span></div>
+        <div class="cat-box" onclick="showCat('pizza', this, 'fa-pizza-slice')"><i class="fas fa-pizza-slice"></i><span>بيتزا</span></div>
+        <div class="cat-box" onclick="showCat('burger', this, 'fa-burger')"><i class="fas fa-burger"></i><span>برجر</span></div>
+        <div class="cat-box" onclick="showCat('pasta', this, 'fa-utensils')"><i class="fas fa-utensils"></i><span>باستا</span></div>
+        <div class="cat-box" onclick="showCat('apps', this, 'fa-shrimp')"><i class="fas fa-shrimp"></i><span>مقبلات</span></div>
+        <div class="cat-box" onclick="showCat('salads', this, 'fa-leaf')"><i class="fas fa-leaf"></i><span>سلطات</span></div>
+        <div class="cat-box" onclick="showCat('breakfast', this, 'fa-egg')"><i class="fas fa-egg"></i><span>فطور</span></div>
+        <div class="cat-box" onclick="showCat('dessert', this, 'fa-ice-cream')"><i class="fas fa-ice-cream"></i><span>حلى</span></div>
+        <div class="cat-box" onclick="showCat('drinks', this, 'fa-martini-glass-citrus')"><i class="fas fa-martini-glass-citrus"></i><span>مشروبات</span></div>
+    </nav>
+</div>
+
+<div class="menu-grid" id="menu-container"></div>
+
+<script>
+    const menuData = {
+        seafood: [
+            {t:"سلمون مشوي", d:"فيليه سلمون طازج بالأعشاب", p:"95", img:"images/ocean-pearl/ph-1485921325833-c519f76c4927.jpg"},
+            {t:"روبيان جامبو", d:"روبيان مشوي بصوص الثوم", p:"110", img:"images/ocean-pearl/ph-1559740038-1914a1333ef5.jpg"},
+            {t:"سمك قاروص", d:"سمكة كاملة مشوية عالفحم", p:"120", img:"images/ocean-pearl/ph-1519708227418-c8fd9a32b7a2.jpg"},
+            {t:"لوبستر رويال", d:"كركند بصوص الكريمة", p:"185", img:"images/ocean-pearl/ph-1553163147-622ab57b070b.jpg"},
+            {t:"كلماري مقرمش", d:"حلقات كلماري مقلية", p:"55", img:"images/ocean-pearl/ph-1599487488170-d11ec9c172f0.jpg"}
+        ],
+        grill: [
+            {t:"كباب غنم", d:"لحم طازج مشوي عالفحم", p:"65", img:"images/ocean-pearl/ph-1529193591184-b1d58b34ecdf.jpg"},
+            {t:"شيش طاووق", d:"دجاج متبل بالزبادي", p:"55", img:"images/ocean-pearl/ph-1598515214211-89d3c73ae83b.jpg"},
+            {t:"ریش ضأن", d:"ریش غنم بصوص خاص", p:"125", img:"images/ocean-pearl/ph-1603048297172-c92544798d5a.jpg"},
+            {t:"أوصال لحم", d:"قطع لحم مع خضار مشوي", p:"75", img:"images/ocean-pearl/ph-1555939594-58d7cb561ad1.jpg"},
+            {t:"مشكل رويال", d:"تشکیلة فاخرة من المشويات", p:"140", img:"images/ocean-pearl/ph-1544025162-d76694265947.jpg"}
+        ],
+        pizza: [
+            {t:"مارغريتا", d:"صلصة طماطم وموزاريلا", p:"45", img:"images/ocean-pearl/ph-1574071318508-1cdbad80ad38.jpg"},
+            {t:"ببروني", d:"ببروني بقري وجبن", p:"55", img:"images/ocean-pearl/ph-1628840042765-356cda07504e.jpg"},
+            {t:"بيتزا خضار", d:"فلفل وزیتون وفطر", p:"50", img:"images/ocean-pearl/ph-1571407970349-bc81e7e96d47.jpg"},
+            {t:"سي فود بيتزا", d:"روبيان وكلماري", p:"70", img:"images/ocean-pearl/ph-1513104890138-7c749659a591.jpg"},
+            {t:"بيتزا دجاج", d:"دجاج بصوص الباربيكيو", p:"60", img:"images/ocean-pearl/ph-1565299624946-b28f40a0ae38.jpg"}
+        ],
+        burger: [
+            {t:"واغیو برجر", d:"لحم واغيو مع ترافل", p:"85", img:"images/ocean-pearl/ph-1568901346375-23c9450c58cd.jpg"},
+            {t:"كلاسيك برجر", d:"لحم أنجوس وجبن", p:"50", img:"images/ocean-pearl/ph-1550547660-d9450f859349.jpg"},
+            {t:"دجاج كرسبي", d:"صدر دجاج مقرمش", p:"45", img:"images/ocean-pearl/ph-1610614819513-58e34989848b.jpg"},
+            {t:"برجر محشو", d:"لحم محشو بالموزاريلا", p:"65", img:"images/ocean-pearl/ph-1594212699903-ec8a3eca50f5.jpg"},
+            {t:"ميني سلايدرز", d:"3 قطع برجر متنوعة", p:"55", img:"images/ocean-pearl/ph-1551782450-a2132b4ba21d.jpg"}
+        ],
+        pasta: [
+            {t:"فيتوتشيني", d:"باستا بالكريمة والدجاج", p:"55", img:"images/ocean-pearl/ph-1645112481338-3560e9c8e94a.jpg"},
+            {t:"بولونيز", d:"سباغيتي بصلصة اللحم", p:"50", img:"images/ocean-pearl/ph-1551183053-bf91a1d81141.jpg"},
+            {t:"بيني أرابياتا", d:"باستا بصلصة حارة", p:"45", img:"images/ocean-pearl/ph-1608897013039-887f21d8c804.jpg"},
+            {t:"لازانیا", d:"طبقات باستا باللحم", p:"60", img:"images/ocean-pearl/ph-1619895092538-128341789043.jpg"},
+            {t:"باستا بحرية", d:"باستا بمارینارا الروبيان", p:"75", img:"images/ocean-pearl/ph-1563379926898-05f4575a45d8.jpg"}
+        ],
+        apps: [
+            {t:"دینامیت روبيان", d:"روبيان بصوص حار", p:"50", img:"images/ocean-pearl/ph-1639748700811-9a9971994e2e.jpg"},
+            {t:"أصابع جبن", d:"موزاريلا مقلية", p:"35", img:"images/ocean-pearl/ph-1531749956467-0b196328a65d.jpg"},
+            {t:"بطاطس لودد", d:"بالجبن واللحم", p:"40", img:"images/ocean-pearl/ph-1585109649139-366815a0d713.jpg"},
+            {t:"كبة مقلية", d:"5 حبات كبة طازجة", p:"30", img:"images/ocean-pearl/ph-1606313564200-e75d5e30476c.jpg"},
+            {t:"ورق عنب", d:"بالحامض وزيت الزيتون", p:"25", img:"images/ocean-pearl/ph-1614532662054-9477e3c15ca9.jpg"}
+        ],
+        salads: [
+            {t:"سيزر دجاج", d:"خس ودجاج مشوي", p:"40", img:"images/ocean-pearl/ph-1550304943-4f24f54ddde9.jpg"},
+            {t:"تبولة", d:"بقدونس وبرغل ولیمون", p:"25", img:"images/ocean-pearl/ph-1540420773420-3366772f4999.jpg"},
+            {t:"فتوش", d:"خضار وخبز محمحص", p:"25", img:"images/ocean-pearl/ph-1604908176997-125f25cc6f3d.jpg"},
+            {t:"سلطة يونانية", d:"خیار وطماطم وجبن فیتا", p:"35", img:"images/ocean-pearl/ph-1540189549336-e6e99c3679fe.jpg"},
+            {t:"كينوا صحية", d:"كينوا بالخضار المنوع", p:"45", img:"images/ocean-pearl/ph-1512621776951-a57141f2eefd.jpg"}
+        ],
+        breakfast: [
+            {t:"فطور شرقي", d:"تشكيلة شعبية منوعة", p:"45", img:"images/ocean-pearl/ph-1533089860892-a7c6f0a88666.jpg"},
+            {t:"شكشوكة", d:"بيض بصلصة الطماطم", p:"30", img:"images/ocean-pearl/ph-1590412200988-a436970781fa.jpg"},
+            {t:"أومليت فرنسي", d:"بيض بالفطر والجبن", p:"35", img:"images/ocean-pearl/ph-1510693206972-df098062cb71.jpg"},
+            {t:"بان كيك", d:"بالعسل والزبدة", p:"40", img:"images/ocean-pearl/ph-1528207776546-365bb710ee93.jpg"},
+            {t:"وافل فواكه", d:"وافل بالنوتيلا والفواكه", p:"45", img:"images/ocean-pearl/ph-1518057111178-44a106bad636.jpg"}
+        ],
+        dessert: [
+            {t:"تشيز كيك", d:"باللوتس والفراولة", p:"35", img:"images/ocean-pearl/ph-1533134242443-d4fd215305ad.jpg"},
+            {t:"مولتن كيك", d:"قلب شوكولاتة سائل", p:"40", img:"images/ocean-pearl/ph-1624353365286-3f8d62daad51.jpg"},
+            {t:"كنافة ساخنة", d:"بالقشطة والمكسرات", p:"30", img:"images/ocean-pearl/ph-1519915028121-7d3463d20b13.jpg"},
+            {t:"براونيز", d:"بالآيس كريم والكراميل", p:"35", img:"images/ocean-pearl/ph-1461023058943-07fcbe16d735.jpg"},
+            {t:"تیرامیسو", d:"قهوة وماسكاربوني", p:"45", img:"images/ocean-pearl/ph-1571877227200-a0d98ea607e9.jpg"}
+        ],
+        drinks: [
+            {t:"موهيتو بلو", d:"نعناع وليمون وتوت", p:"30", img:"images/ocean-pearl/ph-1513558161293-cdaf765ed2fd.jpg"},
+            {t:"عصير برتقال", d:"طبيعي وطازج بارد", p:"25", img:"images/ocean-pearl/ph-1544145945-f904253d0c71.jpg"},
+            {t:"ميلك شيك", d:"فانيليا وشوكولاتة", p:"35", img:"images/ocean-pearl/ph-1572490122747-3968b75cc699.jpg"},
+            {t:"آیس لاتي", d:"قهوة باردة بالحليب", p:"30", img:"images/ocean-pearl/ph-1517701604599-bb29b565090c.jpg"},
+            {t:"سموذي فراولة", d:"فراولة مخفوقة طبيعية", p:"30", img:"images/ocean-pearl/ph-1553531384-cc64ac80f931.jpg"}
+        ]
+    };
+
+    function showCat(catId, element, iconClass) {
+        document.querySelectorAll('.cat-box').forEach(b => b.classList.remove('active'));
+        element.classList.add('active');
+
+        const container = document.getElementById('menu-container');
+        const items = menuData[catId].map(item => `
+            <div class="square-card">
+                <img src="${item.img}" class="square-img" loading="lazy" onerror="this.src='images/ocean-pearl/ph-1546069901-ba9599a7e63c.jpg'">
+                <div class="square-body">
+                    <h3><i class="fas ${iconClass}"></i> ${item.t}</h3>
+                    <p>${item.d}</p>
+                    <div class="footer-item">
+                        <span class="price-tag">${item.p} ريال</span>
+                        <div class="add-btn"><i class="fas fa-plus"></i></div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        
+        container.innerHTML = items;
+        element.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+    }
+
+    window.onload = () => showCat('seafood', document.querySelector('.cat-box'), 'fa-fish');
+</script>
+</body>
+</html>

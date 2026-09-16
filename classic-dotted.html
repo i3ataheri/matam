@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منيو لومينا رويال</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --خلفية: #ffffff;
+            --لون-رئيسي: #1a1a1a;
+            --لون-السمة: #d35400;
+            --نص-ثانوي: #7f8c8d;
+            --فواصل: #f1f2f6;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; scroll-behavior: smooth; }
+        body { background: var(--خلفية); color: var(--لون-رئيسي); }
+
+        /* الهيدر */
+        header {
+            padding: 60px 20px;
+            text-align: center;
+            background: #000;
+            color: #fff;
+        }
+        header h1 { font-size: 3rem; color: var(--لون-السمة); margin-bottom: 10px; }
+
+        /* التنقل العلوي ثابت */
+        .nav-wrapper {
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(255,255,255,0.98);
+            border-bottom: 1px solid var(--فواصل);
+            display: flex; overflow-x: auto; padding: 15px 0;
+            scrollbar-width: none;
+        }
+        .nav-wrapper::-webkit-scrollbar { display: none; }
+        .nav-item {
+            flex: 0 0 auto; padding: 0 25px;
+            text-decoration: none; color: var(--لون-رئيسي);
+            text-align: center; font-weight: bold;
+        }
+        .nav-item i { display: block; font-size: 20px; margin-bottom: 5px; color: var(--لون-السمة); }
+
+        /* القائمة */
+        .content { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        
+        section { padding-top: 80px; margin-bottom: 40px; }
+        .section-title {
+            text-align: center; margin-bottom: 40px;
+            font-size: 2.2rem; color: var(--لون-السمة);
+            position: relative;
+        }
+        .section-title::after {
+            content: ""; display: block; width: 60px; height: 4px;
+            background: var(--لون-السمة); margin: 10px auto;
+        }
+
+        /* شبكة المنتجات - مثل الصورة */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* ديسكتوب: عمودين */
+            gap: 40px 60px;
+        }
+
+        .food-item {
+            display: flex; align-items: center; gap: 20px;
+        }
+        .food-img {
+            width: 100px; height: 100px; border-radius: 50%;
+            object-fit: cover; flex-shrink: 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .food-info { flex: 1; }
+        .food-head {
+            display: flex; justify-content: space-between; align-items: baseline;
+            border-bottom: 1px dotted #ccc; margin-bottom: 8px;
+        }
+        .food-name { font-weight: 900; font-size: 1.1rem; }
+        .food-price { font-weight: 900; color: var(--لون-رئيسي); font-size: 1rem; }
+        .food-desc { font-size: 0.9rem; color: var(--نص-ثانوي); line-height: 1.4; }
+
+        /* ريسبانسيف كامل للموبايل */
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; } /* موبايل: عمود واحد */
+            header h1 { font-size: 2rem; }
+            .food-img { width: 80px; height: 80px; }
+            .section-title { font-size: 1.8rem; }
+        }
+
+        footer { text-align: center; padding: 40px; background: #fafafa; margin-top: 50px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>لومينا رويال</h1>
+        <p>تجربة طعام فاخرة باللغة العربية</p>
+    </header>
+
+    <nav class="nav-wrapper">
+        <a href="#sec0" class="nav-item"><i class="fas fa-hamburger"></i><span>برجر</span></a>
+        <a href="#sec1" class="nav-item"><i class="fas fa-pizza-slice"></i><span>بيتزا</span></a>
+        <a href="#sec2" class="nav-item"><i class="fas fa-utensils"></i><span>باستا</span></a>
+        <a href="#sec3" class="nav-item"><i class="fas fa-leaf"></i><span>سلطة</span></a>
+        <a href="#sec4" class="nav-item"><i class="fas fa-ice-cream"></i><span>حلى</span></a>
+        <a href="#sec5" class="nav-item"><i class="fas fa-fish"></i><span>سوشي</span></a>
+        <a href="#sec6" class="nav-item"><i class="fas fa-drumstick-bite"></i><span>لحوم</span></a>
+        <a href="#sec7" class="nav-item"><i class="fas fa-pepper-hot"></i><span>مقبلات</span></a>
+        <a href="#sec8" class="nav-item"><i class="fas fa-coffee"></i><span>قهوة</span></a>
+        <a href="#sec9" class="nav-item"><i class="fas fa-cocktail"></i><span>عصائر</span></a>
+    </nav>
+
+    <div class="content" id="main-content">
+        </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة لمطعم لومينا رويال - ٢٠٢٦</p>
+    </footer>
+
+    <script>
+        const categories = [
+            {n: "برجر", i: "🍔", img: "images/classic-dotted/ph-1571091718767-18b5b1457add.jpg"},
+            {n: "بيتزا", i: "🍕", img: "images/classic-dotted/ph-1513104890138-7c749659a591.jpg"},
+            {n: "باستا", i: "🍝", img: "images/classic-dotted/ph-1546548970-71785318a17b.jpg"},
+            {n: "سلطة", i: "🥗", img: "images/classic-dotted/ph-1512621776951-a57141f2eefd.jpg"},
+            {n: "حلى", i: "🍰", img: "images/classic-dotted/ph-1551024506-0bccd828d307.jpg"},
+            {n: "سوشي", i: "🍣", img: "images/classic-dotted/ph-1579871494447-9811cf80d66c.jpg"},
+            {n: "لحوم", i: "🥩", img: "images/classic-dotted/ph-1544025162-d76694265947.jpg"},
+            {n: "مقبلات", i: "🍟", img: "images/classic-dotted/ph-1541592106381-b31e9677c0e5.jpg"},
+            {n: "قهوة", i: "☕", img: "images/classic-dotted/ph-1509042239860-f550ce710b93.jpg"},
+            {n: "عصائر", i: "🍹", img: "images/classic-dotted/ph-1536935338218-9bca1d2920a1.jpg"}
+        ];
+
+        const myFoods = [
+            { cat: "برجر", n: "برجر كلاسيك رويال", p: "٣٥", d: "لحم مشوي مع جبنة شيدر وبصل مقرمش" },
+            { cat: "برجر", n: "برجر دجاج مقرمش", p: "٣٨", d: "صدر دجاج مقلي مع صوص رويال الخاص" },
+            { cat: "بيتزا", n: "مارغريتا إيطالية", p: "٤٠", d: "صلصة طماطم وريحان وجبن موزاريل طازج" },
+            { cat: "بيتزا", n: "بيتزا بيبروني", p: "٤٥", d: "شرائح بيبروني بقري وجبن مضاعف" },
+            { cat: "باستا", n: "فوتشيني ألفريدو", p: "٤٥", d: "باستا بالكريمة والدجاج والفطر البري" },
+            { cat: "باستا", n: "لازانيا رويال", p: "٥٥", d: "طبقات من الباستا واللحم والبشاميل الغني" },
+            { cat: "سلطة", n: "سلطة سيزر", p: "٣٥", d: "خس طازج، صوص سيزر، وخبز محمص بالثوم" },
+            { cat: "لحوم", n: "ستيك ريب آي", p: "١٣٥", d: "لحم مشوي فاخر مع صوص الفطر والبطاطس" },
+            { cat: "قهوة", n: "سبنش لاتيه", p: "٢٦", d: "حليب مكثف مع قهوة مختصة باردة أو حارة" },
+            { cat: "عصائر", n: "برتقال طازج", p: "١٨", d: "عصير طبيعي ١٠٠٪ بدون إضافات سكر" }
+        ];
+
+        function init() {
+            const container = document.getElementById('main-content');
+            categories.forEach((cat, i) => {
+                const foods = myFoods.filter(f => f.cat === cat.n);
+                if (foods.length > 0) {
+                    let sectionHtml = `
+                    <section id="sec${i}">
+                        <h2 class="section-title">${cat.n}</h2>
+                        <div class="grid">`;
+                    
+                    foods.forEach(food => {
+                        sectionHtml += `
+                        <div class="food-item">
+                            <img src="${cat.img}" class="food-img" alt="${food.n}">
+                            <div class="food-info">
+                                <div class="food-head">
+                                    <span class="food-name">${food.n}</span>
+                                    <span class="food-price">${food.price || food.p} ر.س</span>
+                                </div>
+                                <p class="food-desc">${food.d}</p>
+                            </div>
+                        </div>`;
+                    });
+                    container.innerHTML += sectionHtml + `</div></section>`;
+                }
+            });
+        }
+        window.onload = init;
+    </script>
+</body>
+</html>

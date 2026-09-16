@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منيو ديجيتال - عرض القائمة</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
+
+        :root {
+            --أحمر-داكن: #8B0000;
+            --أصفر-ذهبي: #FFD700;
+            --أسود-مطفي: #050505;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--أسود-مطفي);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+            overflow: hidden;
+        }
+
+        .menu-wrapper {
+            width: 100%;
+            max-width: 450px;
+            height: 92vh;
+            position: relative;
+            background: #000;
+            border-radius: 40px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .bg-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+        }
+        #bgImg {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: brightness(0.4);
+        }
+
+        /* سایدبار عمودی */
+        .sidebar-main {
+            width: 85px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            padding: 100px 0;
+            gap: 25px;
+            z-index: 10;
+            border-left: 1px solid rgba(255,255,255,0.1);
+            overflow-y: scroll;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
+        }
+        .sidebar-main::-webkit-scrollbar { display: none; }
+
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.3s; flex-shrink: 0;
+        }
+        .icon-box {
+            width: 52px; height: 52px; border-radius: 18px; background: #1a1a1a;
+            display: flex; justify-content: center; align-items: center; font-size: 24px; border: 1px solid #333;
+        }
+        .nav-item span { font-size: 13px; margin-top: 6px; color: #999; font-weight: bold; }
+        .nav-item.active .icon-box { background: var(--أحمر-داكن); border-color: var(--أصفر-ذهبي); transform: scale(1.1); box-shadow: 0 0 15px var(--أحمر-داكن); }
+        .nav-item.active span { color: var(--أصفر-ذهبي); }
+
+        /* منوی افقی پایین */
+        .sub-menu-container {
+            position: absolute;
+            bottom: 45px;
+            right: 90px;
+            left: 5px;
+            z-index: 20;
+        }
+
+        .carousel {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 15px 40px;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
+        }
+        .carousel::-webkit-scrollbar { display: none; }
+
+        .sub-card {
+            flex: 0 0 130px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 12px 8px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: 0.4s;
+        }
+        .sub-card.active {
+            background: var(--أحمر-داكن);
+            border-color: var(--أصفر-ذهبي);
+            transform: translateY(-8px);
+        }
+        .sub-card h4 { font-size: 14px; margin-bottom: 4px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sub-card .p-tag { font-size: 12px; color: var(--أصفر-ذهبي); font-weight: bold; }
+
+        .info-panel {
+            position: absolute;
+            top: 70px;
+            right: 105px;
+            left: 30px;
+            z-index: 5;
+            pointer-events: none;
+        }
+        #title { font-size: 34px; font-weight: 900; color: #fff; line-height: 1.1; text-shadow: 2px 2px 20px rgba(0,0,0,0.8); }
+        #desc { font-size: 15px; color: #ccc; margin-top: 10px; line-height: 1.4; }
+
+    </style>
+</head>
+<body>
+
+<div class="menu-wrapper">
+    <div class="bg-container">
+        <img id="bgImg" src="images/tv-display/ph-1567620905732-2d1ec7bb7445.jpg">
+    </div>
+
+    <div class="sidebar-main" id="mainSidebar">
+        <div class="nav-item active" onclick="loadSub('burger', this)"><div class="icon-box">🍔</div><span>برجر</span></div>
+        <div class="nav-item" onclick="loadSub('pizza', this)"><div class="icon-box">🍕</div><span>بيتزا</span></div>
+        <div class="nav-item" onclick="loadSub('steak', this)"><div class="icon-box">🥩</div><span>ستيك</span></div>
+        <div class="nav-item" onclick="loadSub('pasta', this)"><div class="icon-box">🍝</div><span>باستا</span></div>
+        <div class="nav-item" onclick="loadSub('sushi', this)"><div class="icon-box">🍣</div><span>سوشي</span></div>
+        <div class="nav-item" onclick="loadSub('taco', this)"><div class="icon-box">🌮</div><span>تاكو</span></div>
+        <div class="nav-item" onclick="loadSub('salad', this)"><div class="icon-box">🥗</div><span>سلطة</span></div>
+        <div class="nav-item" onclick="loadSub('drinks', this)"><div class="icon-box">🥤</div><span>عصائر</span></div>
+        <div class="nav-item" onclick="loadSub('dessert', this)"><div class="icon-box">🍰</div><span>حلى</span></div>
+        <div class="nav-item" onclick="loadSub('coffee', this)"><div class="icon-box">☕</div><span>قهوة</span></div>
+    </div>
+
+    <div class="info-panel">
+        <h2 id="title">قائمة الطعام</h2>
+        <p id="desc">تصفح منوعاتنا الفاخرة</p>
+    </div>
+
+    <div class="sub-menu-container">
+        <div class="carousel" id="subCarousel"></div>
+    </div>
+</div>
+
+<script>
+    const data = {
+        burger: [
+            {n: 'كلاسيك برجر', p: '45 SAR', d: 'لحم بقري مشوي مع جبنة شيدر', img: 'images/tv-display/ph-1568901346375-23c9450c58cd.jpg'},
+            {n: 'ترافل برجر', p: '55 SAR', d: 'نكهة الفطر البري الفاخرة', img: 'images/tv-display/ph-1521305916504-4a1121188589.jpg'},
+            {n: 'ماشروم برجر', p: '50 SAR', d: 'صلصة المشروم السويسرية', img: 'images/tv-display/ph-1594212699903-ec8a3eca50f5.jpg'},
+            {n: 'دجاج مقرمش', p: '42 SAR', d: 'صدر دجاج مقلي بخلطة سرية', img: 'images/tv-display/ph-1625813506062-0aeb1d7a094b.jpg'},
+            {n: 'برجر دبل', p: '75 SAR', d: 'طبقتين من اللحم والجبن الغني', img: 'images/tv-display/ph-1586190848861-99aa4a171e90.jpg'}
+        ],
+        pizza: [
+            {n: 'مارغريتا', p: '35 SAR', d: 'الريحان الإيطالي مع الموزاريلا', img: 'images/tv-display/ph-1604068549290-dea0e4a305ca.jpg'},
+            {n: 'ببروني', p: '48 SAR', d: 'ببروني بقري مدخن طازج', img: 'images/tv-display/ph-1628840042765-356cda07504e.jpg'},
+            {n: 'خضار مشكلة', p: '40 SAR', d: 'فلفل، زيتون، وفطر طازج', img: 'images/tv-display/ph-1571407970349-bc81e7e96d47.jpg'},
+            {n: 'بيتزا دجاج', p: '52 SAR', d: 'دجاج مشوي مع صلصة الباربيكيو', img: 'images/tv-display/ph-1513104890138-7c749659a591.jpg'},
+            {n: 'أربعة أجبان', p: '55 SAR', d: 'مزيج فاخر من الأجبان العالمية', img: 'images/tv-display/ph-1573821663912-569905455b1c.jpg'}
+        ],
+        steak: [
+            {n: 'ريب آي ستيك', p: '120 SAR', d: 'قطعة لحم فاخرة مشوية ببطء', img: 'images/tv-display/ph-1600891964599-f61ba0e24092.jpg'},
+            {n: 'تي بون ستيك', p: '145 SAR', d: 'لحم بقري بالعظم لنكهة غنية', img: 'images/tv-display/ph-1546241072-48010ad28c2c.jpg'},
+            {n: 'فيلييه مينيون', p: '160 SAR', d: 'أطرى قطعة لحم بقري في العالم', img: 'images/tv-display/ph-1558030006-450675393462.jpg'},
+            {n: 'ستيك دجاج', p: '65 SAR', d: 'صدر دجاج مشوي مع الأعشاب', img: 'images/tv-display/ph-1604908176997-125f25cc6f3d.jpg'},
+            {n: 'واغيو ستيك', p: '250 SAR', d: 'لحم الواغيو الياباني الأصيل', img: 'images/tv-display/ph-1615937657715-bc7b4b7962c1.jpg'}
+        ],
+        pasta: [
+            {n: 'فيتوتشيني', p: '55 SAR', d: 'باستا كريمية مع فطر ودجاج', img: 'images/tv-display/ph-1645112481338-30125f82713e.jpg'},
+            {n: 'سباغيتي بولونيز', p: '50 SAR', d: 'صلصة الطماطم التقليدية واللحم', img: 'images/tv-display/ph-1551183053-bf91a1d81141.jpg'},
+            {n: 'بني أرابياتا', p: '45 SAR', d: 'باستا حارة مع الفلفل والثوم', img: 'images/tv-display/ph-1621996346565-e3dbc646d9a9.jpg'},
+            {n: 'لازانيا', p: '60 SAR', d: 'طبقات من الباستا والجبن واللحم', img: 'images/tv-display/ph-1619895092538-128341789043.jpg'},
+            {n: 'رافيولي', p: '65 SAR', d: 'محشوة بالأجبان والسبانخ الطازجة', img: 'images/tv-display/ph-1587740989855-d81721caedb9.jpg'}
+        ],
+        sushi: [
+            {n: 'كاليفورنيا رول', p: '40 SAR', d: 'سرطان البحر مع الأفوكادو', img: 'images/tv-display/ph-1579871494447-9811cf80d66c.jpg'},
+            {n: 'نيجيري سلمون', p: '45 SAR', d: 'سلمون طازج فوق أرز السوشي', img: 'images/tv-display/ph-1583623025817-d180a2221d0a.jpg'},
+            {n: 'دراغون رول', p: '55 SAR', d: 'تمبورا الروبيان مع ثعبان البحر', img: 'images/tv-display/ph-1611143669185-af224c5e3252.jpg'},
+            {n: 'ساشيمي منوع', p: '70 SAR', d: 'تشكيلة من الأسماك النيئة الفاخرة', img: 'images/tv-display/ph-1553621042-f6e147245754.jpg'},
+            {n: 'ماكي حار', p: '48 SAR', d: 'تونة حارة مع صلصة المایونيز', img: 'images/tv-display/ph-1559466273-d95e72debaf8.jpg'}
+        ],
+        taco: [
+            {n: 'تاكو لحم', p: '35 SAR', d: 'لحم مفروم مع بهارات مكسيكية', img: 'images/tv-display/ph-1565299585323-38d6b0865b47.jpg'},
+            {n: 'تاكو دجاج', p: '32 SAR', d: 'دجاج مشوي مع صلصة السالسا', img: 'images/tv-display/ph-1551504734-5ee1c4a1479b.jpg'},
+            {n: 'تاكو سمك', p: '38 SAR', d: 'سمك مقلي مع سلطة الملفوف', img: 'images/tv-display/ph-1512838243191-e81e8f66f1fd.jpg'},
+            {n: 'بوريتو عملاق', p: '45 SAR', d: 'خبز التورتيلا المحشو بالأرز واللحم', img: 'images/tv-display/ph-1584030373081-f37b7bb4fa82.jpg'},
+            {n: 'ناشوز شيبس', p: '30 SAR', d: 'مع الجبن السائل والهالبينو', img: 'images/tv-display/ph-1513456852971-30c0b8199d4d.jpg'}
+        ],
+        salad: [
+            {n: 'سلطة سیزر', p: '35 SAR', d: 'خس طازج مع دجاج وخبز محمص', img: 'images/tv-display/ph-1550304943-4f24f54ddde9.jpg'},
+            {n: 'سلطة يونانية', p: '30 SAR', d: 'جبنة فيتا مع زيتون وخيار', img: 'images/tv-display/ph-1540420773420-3366772f4999.jpg'},
+            {n: 'فتوش', p: '25 SAR', d: 'خضروات مع دبس الرمان والخبز', img: 'images/tv-display/ph-1604908812927-e4c73950fd21.jpg'},
+            {n: 'كينوا سوبر', p: '40 SAR', d: 'كينوا مع خضروات صحية ومنوعة', img: 'images/tv-display/ph-1512621776951-a57141f2eefd.jpg'},
+            {n: 'سلطة جرجیر', p: '28 SAR', d: 'جرجير مع رمان وجوز هند', img: 'images/tv-display/ph-1623428187969-5da2dcea5ebf.jpg'}
+        ],
+        drinks: [
+            {n: 'موهيتو ليمون', p: '22 SAR', d: 'نعناع منعش مع الليمون والثلج', img: 'images/tv-display/ph-1513558161293-cdaf765ed2fd.jpg'},
+            {n: 'عصير برتقال', p: '18 SAR', d: 'برتقال طازج يعصر يومياً', img: 'images/tv-display/ph-1613478223719-2ab802602423.jpg'},
+            {n: 'ميلك شيك شوكولاتة', p: '25 SAR', d: 'مزيج بارد وكريمي من الشوكولاتة', img: 'images/tv-display/ph-1572490122747-3968b75cc699.jpg'},
+            {n: 'موهيتو فراولة', p: '22 SAR', d: 'نكهة الفراولة مع الصودا والنعناع', img: 'images/tv-display/ph-1513558161293-cdaf765ed2fd.jpg'},
+            {n: 'بيبسي / سفن', p: '10 SAR', d: 'مشروبات غازية منعشة', img: 'images/tv-display/ph-1622483767028-3f66f32aef97.jpg'}
+        ],
+        dessert: [
+            {n: 'تشيز كيك', p: '30 SAR', d: 'جبنة كريمية مع طبقة توت', img: 'images/tv-display/ph-1533134242443-d4fd215305ad.jpg'},
+            {n: 'براونیز ساخن', p: '35 SAR', d: 'شوكولاتة داكنة تقدم مع الآيس كريم', img: 'images/tv-display/ph-1606313564200-e75d5e30476c.jpg'},
+            {n: 'كنافة بالجبن', p: '25 SAR', d: 'كنافة شرقية أصيلة وساخنة', img: 'images/tv-display/ph-1576618148400-f54bed99fcfd.jpg'},
+            {n: 'تیرامیسو', p: '32 SAR', d: 'حلى إيطالي بنكهة القهوة الفاخرة', img: 'images/tv-display/ph-1571877227200-a0d98ea607e9.jpg'},
+            {n: 'آيس كريم فانيليا', p: '20 SAR', d: 'ثلاث كرات من الآيس كريم الفاخر', img: 'images/tv-display/ph-1563805042-7684c019e1cb.jpg'}
+        ],
+        coffee: [
+            {n: 'إسبريسو', p: '12 SAR', d: 'قهوة مركزة وقوية النكهة', img: 'images/tv-display/ph-1510707577719-ae7c14805e3a.jpg'},
+            {n: 'كابتشينو', p: '18 SAR', d: 'قهوة مع رغوة حليب كثيفة', img: 'images/tv-display/ph-1572442388796-11668a67e53d.jpg'},
+            {n: 'لاتيه كراميل', p: '20 SAR', d: 'نكهة الكراميل اللذيذة مع الحليب', img: 'images/tv-display/ph-1570968915860-54d5c301fa9f.jpg'},
+            {n: 'سبانيش لاتيه', p: '22 SAR', d: 'قهوة باردة ومحلاة بلمسة خاصة', img: 'images/tv-display/ph-1461023058943-07fcbe16d735.jpg'},
+            {n: 'قهوة عربية', p: '30 SAR', d: 'دلة قهوة عربية بالهيل والزعفران', img: 'images/tv-display/ph-1590059032621-6f37ca7af30a.jpg'}
+        ]
+    };
+
+    function loadSub(cat, el) {
+        const sidebar = document.getElementById('mainSidebar');
+        sidebar.scrollTo({ top: el.offsetTop - sidebar.offsetHeight/2 + el.offsetHeight/2, behavior: 'smooth' });
+
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        el.classList.add('active');
+
+        const carousel = document.getElementById('subCarousel');
+        carousel.innerHTML = '';
+        const items = data[cat] || data['burger'];
+
+        items.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'sub-card';
+            card.innerHTML = `<h4>${item.n}</h4><div class="p-tag">${item.p}</div>`;
+            card.onclick = () => {
+                updateDisplay(item);
+                carousel.scrollTo({ left: card.offsetLeft - carousel.offsetWidth/2 + card.offsetWidth/2, behavior: 'smooth' });
+                document.querySelectorAll('.sub-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+            };
+            carousel.appendChild(card);
+            if(index === 0) card.click();
+        });
+    }
+
+    function updateDisplay(item) {
+        const bg = document.getElementById('bgImg');
+        bg.style.opacity = '0.3';
+        setTimeout(() => {
+            bg.src = item.img;
+            document.getElementById('title').innerText = item.n;
+            document.getElementById('desc').innerText = item.d;
+            bg.style.opacity = '1';
+        }, 150);
+    }
+
+    window.onload = () => loadSub('burger', document.querySelector('.nav-item'));
+</script>
+
+</body>
+</html>

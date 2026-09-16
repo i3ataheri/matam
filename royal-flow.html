@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>منيو ديجيتال | المنيو الاحترافي</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --الأسود: #0a0a0a;
+            --الرمادي-الداكن: #151515;
+            --النيون: #ccff00;
+            --الأبيض: #ffffff;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--الأسود);
+            font-family: 'Cairo', sans-serif;
+            color: var(--الأبيض);
+            width: 100%;
+            overflow-x: clip; /* جلوگیری از اسکرول افقی مزاحم */
+        }
+
+        /* --- هدر الموقع --- */
+        .main-header {
+            background: linear-gradient(to bottom, #1a1a1a, var(--الأسود));
+            padding: 40px 5%;
+            text-align: center;
+            border-bottom: 2px solid var(--النيون);
+        }
+        .main-header h1 { 
+            margin: 0; 
+            font-size: clamp(1.8rem, 5vw, 2.8rem); 
+            font-weight: 900; 
+            color: var(--النيون); 
+            text-shadow: 0 0 15px rgba(204, 255, 0, 0.2);
+        }
+
+        /* --- نوار دسته‌بندی وسط‌چین و هوشمند --- */
+        .nav-container {
+            position: -webkit-sticky;
+            position: sticky; 
+            top: 0;
+            background: rgba(21, 21, 21, 0.96);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 9999;
+            padding: 5px 0;
+            border-bottom: 1px solid #222;
+            width: 100%;
+            height: 115px;
+            overflow: hidden;
+        }
+        
+        .category-nav {
+            display: flex; 
+            overflow-x: auto; 
+            overflow-y: hidden;
+            scroll-behavior: smooth;
+            gap: 20px; 
+            padding: 0 5%;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            height: 100%;
+            align-items: center;
+            /* وسط‌چین کردن آیتم‌ها در دسکتاپ */
+            justify-content: center;
+        }
+        
+        /* در موبایل وسط‌چین را غیرفعال می‌کنیم تا اسکرول کار کند */
+        @media (max-width: 1024px) {
+            .category-nav {
+                justify-content: flex-start;
+            }
+        }
+        
+        .category-nav::-webkit-scrollbar { display: none; }
+
+        .cat-item {
+            flex: 0 0 85px; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            opacity: 0.4; 
+            transition: 0.4s; 
+            cursor: pointer;
+            user-select: none;
+        }
+        .cat-item.active { opacity: 1; transform: scale(1.05); }
+        
+        .icon-circle {
+            width: 60px; height: 60px; border-radius: 18px;
+            background: #222; display: flex; justify-content: center; align-items: center;
+            font-size: 1.8rem; margin-bottom: 5px; border: 1px solid #333;
+            transition: 0.3s;
+        }
+        .cat-item.active .icon-circle {
+            border-color: var(--النيون);
+            box-shadow: 0 0 15px rgba(204, 255, 0, 0.2);
+        }
+        .cat-item span { font-size: 0.8rem; font-weight: 700; color: #fff; white-space: nowrap; }
+
+        /* --- حاوية المحتوى --- */
+        .main-container { width: 100%; padding: 40px 0; }
+        .category-section { margin-bottom: 80px; padding: 0 5%; width: 100%; box-sizing: border-box; }
+        
+        .section-title {
+            color: var(--الأبيض); font-size: 2.2rem; font-weight: 900;
+            margin-bottom: 30px; display: flex; align-items: center; gap: 15px;
+        }
+        .section-title::before { 
+            content: ''; width: 8px; height: 40px; 
+            background: var(--النيون); border-radius: 10px; 
+        }
+
+        /* --- بطاقة الطعام --- */
+        .food-card { 
+            background: #111; 
+            border-radius: 35px; 
+            overflow: hidden; 
+            border: 1px solid #222; 
+            position: relative; 
+            height: 100%; 
+            transition: 0.3s;
+        }
+        .food-card:hover { border-color: var(--النيون); }
+        
+        .image-box { position: relative; width: 100%; height: 280px; background: #1a1a1a; }
+        .food-card img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .price-circle {
+            position: absolute; top: 20px; left: 20px; background: var(--النيون); color: #000;
+            width: 65px; height: 65px; border-radius: 50%; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; font-weight: 900; z-index: 10; 
+            border: 2px solid var(--الأسود); box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .food-info { padding: 25px; text-align: right; }
+        .food-info h4 { margin: 0; font-size: 1.5rem; color: var(--الأبيض); }
+        .food-info p { font-size: 0.9rem; color: #999; margin-top: 12px; line-height: 1.7; height: 3.4em; overflow: hidden; }
+
+        footer { text-align: center; padding: 80px 20px; background-color: #080808; border-top: 1px solid #222; }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <h1>فان الخور الرماد</h1>
+        <p>نقدم لكم أجود أنواع المأكولات والمذاقات العالمية</p>
+    </header>
+
+    <div class="nav-container">
+        <div class="category-nav" id="catNav">
+            <div class="cat-item active" onclick="scrollToSec('sec-0', this)"><div class="icon-circle">🍔</div><span>برجر</span></div>
+            <div class="cat-item" onclick="scrollToSec('sec-1', this)"><div class="icon-circle">🍕</div><span>بيتزا</span></div>
+            <div class="cat-item" onclick="scrollToSec('sec-2', this)"><div class="icon-circle">🍝</div><span>باستا</span></div>
+            <div class="cat-item" onclick="scrollToSec('sec-3', this)"><div class="icon-circle">🥩</div><span>لحوم</span></div>
+            <div class="cat-item" onclick="scrollToSec('sec-4', this)"><div class="icon-circle">🥗</div><span>سلطات</span></div>
+            <div class="cat-item" onclick="scrollToSec('sec-5', this)"><div class="icon-circle">🍣</div><span>سوشي</span></div>
+            <div class="cat-item" onclick="scrollToSec('sec-6', this)"><div class="icon-circle">🍟</div><span>مقبلات</span></div>
+            <div class="cat-item" onclick="scrollToSec('sec-7', this)"><div class="icon-circle">🍰</div><span>حلى</span></div>
+            <div class="cat-item" onclick="scrollToSec('sec-8', this)"><div class="icon-circle">☕</div><span>قهوة</span></div>
+            <div class="cat-item" onclick="scrollToSec('sec-9', this)"><div class="icon-circle">🍹</div><span>عصائر</span></div>
+        </div>
+    </div>
+
+    <main class="main-container" id="main-content"></main>
+
+    <footer>
+        <p style="color:#666">جميع الحقوق محفوظة © 2026</p>
+        <div class="brand-logo">
+            <span style="color:#888; font-size: 1.1rem;">تم التصميم بواسطة </span>
+            <span style="color: var(--النيون); font-weight: 900; font-size: 1.3rem;">منيو ديجيتال</span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        const categories = [
+            { name: "ركن البرجر", keyword: "burger" }, { name: "بيتزا إيطالية", keyword: "pizza" },
+            { name: "باستا طازجة", keyword: "pasta" }, { name: "مشاوی ملكية", keyword: "steak" },
+            { name: "سلطات صحية", keyword: "salad" }, { name: "سوشي ياباني", keyword: "sushi" },
+            { name: "مقبلات رويال", keyword: "fries" }, { name: "حلويات شرقية", keyword: "dessert" },
+            { name: "قهوة مختصة", keyword: "coffee" }, { name: "عصائر طبيعية", keyword: "juice" }
+        ];
+
+        const content = document.getElementById('main-content');
+        categories.forEach((cat, idx) => {
+            let slides = '';
+            for(let i=1; i<=10; i++) {
+                const imgUrl = `images/royal-flow/${cat.keyword}-${i}.jpg`;
+                slides += `
+                    <div class="swiper-slide">
+                        <div class="food-card">
+                            <div class="price-circle"><span>45</span><small>SAR</small></div>
+                            <div class="image-box"><img src="${imgUrl}"></div>
+                            <div class="food-info">
+                                <h4>${cat.name} ${i}</h4>
+                                <p>مكونات طازجة مختارة بعناية فائقة لنقدم لك تجربة تذوق لا تُنسى.</p>
+                            </div>
+                        </div>
+                    </div>`;
+            }
+            content.innerHTML += `
+                <section class="category-section" id="sec-${idx}">
+                    <h2 class="section-title">${cat.name}</h2>
+                    <div class="swiper foodSwiper"><div class="swiper-wrapper">${slides}</div></div>
+                </section>`;
+        });
+
+        const swipers = new Swiper(".foodSwiper", {
+            slidesPerView: 1.2, spaceBetween: 25, grabCursor: true,
+            simulateTouch: true, touchRatio: 1.2, longSwipesMs: 120,
+            watchOverflow: true, resistanceRatio: 0.85,
+            speed: 300,
+            breakpoints: { 640: { slidesPerView: 2.3 }, 1024: { slidesPerView: 3.5 }, 1440: { slidesPerView: 4.8 } }
+        });
+
+        function scrollToSec(id, element) {
+            const el = document.getElementById(id);
+            const yOffset = -140; 
+            const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({top: y, behavior: 'smooth'});
+            document.querySelectorAll('.cat-item').forEach(c => c.classList.remove('active'));
+            element.classList.add('active');
+            
+            const nav = document.getElementById('catNav');
+            // فقط در صورتی اسکرول کن که منو وسط‌چین نباشد (حالت موبایل)
+            if (window.innerWidth <= 1024) {
+                nav.scrollTo({ left: element.offsetLeft - (nav.offsetWidth / 2) + (element.offsetWidth / 2), behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>

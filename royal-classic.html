@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>لاونج المذاق الملكي - التصميم العصري</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --اللون-الأحمر-الجري: #800000; 
+            --اللون-الذهبي: #D4AF37; 
+            --اللون-الذهبي-الفاتح: #FFD700;
+            --الخط-العريض: 'Cairo', sans-serif;
+            --الخط-الناعم: 'Tajawal', sans-serif;
+        }
+
+        html, body {
+            overflow-x: hidden; /* جلوگیری از اسکرول افقی */
+            width: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body { 
+            font-family: var(--الخط-الناعم); 
+            margin: 0; 
+            background: #0a0a0a;
+            color: white;
+            position: relative;
+        }
+
+        header {
+            height: 35vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(128, 0, 0, 0.8), #0a0a0a), 
+                        url('images/royal-classic/ph-1514362545857-3bc16c4c7d1b.jpg');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            border-bottom: 2px solid var(--اللون-الذهبي);
+        }
+
+        header h1 { 
+            font-family: var(--الخط-العريض); 
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            color: var(--اللون-الذهبي);
+            margin: 0;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.8);
+        }
+
+        .categories-nav {
+            display: flex;
+            gap: 12px;
+            padding: 25px 15px;
+            overflow-x: auto;
+            background: rgba(10, 10, 10, 0.95);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            scrollbar-width: none;
+        }
+        
+        @media (max-width: 1000px) {
+            .categories-nav { justify-content: flex-start; }
+        }
+
+        .categories-nav::-webkit-scrollbar { display: none; }
+
+        .category-btn {
+            padding: 10px 22px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: #ccc;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+        }
+
+        .category-btn.active { 
+            background: var(--اللون-الذهبي); 
+            color: var(--اللون-الأحمر-الجري);
+            border-color: var(--اللون-الذهبي-الفاتح);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            transform: scale(1.1);
+        }
+
+        .menu-list-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px 120px;
+        }
+
+        .menu-section { 
+            display: none; 
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 35px;
+        }
+        .menu-section.active { display: grid; }
+
+        .menu-card {
+            background: #1a1a1a;
+            border-radius: 30px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            transition: 0.4s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-15px);
+            border-color: var(--اللون-الذهبي);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .image-container {
+            position: relative;
+            width: 100%;
+            height: 240px;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-price {
+            position: absolute;
+            bottom: -20px;
+            left: 25px;
+            background: var(--اللون-الأحمر-الجري);
+            color: white;
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--الخط-العريض);
+            border: 3px solid var(--اللون-الذهبي);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+            z-index: 2;
+        }
+
+        .card-price .num { font-size: 1.8rem; line-height: 1; font-weight: 900; color: var(--اللون-الذهبي-الفاتح); }
+        .card-price .unit { font-size: 0.7rem; }
+
+        .card-content {
+            padding: 35px 20px 25px;
+            text-align: right;
+        }
+
+        .card-title {
+            font-family: var(--الخط-العريض);
+            font-size: 1.5rem;
+            margin: 0 0 12px 0;
+            color: var(--اللون-الذهبي-الفاتح);
+        }
+
+        .card-desc {
+            color: #aaa;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            height: 3.2em;
+            overflow: hidden;
+        }
+
+        .card-price .num { font-size: 1.5rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 data-aos="zoom-out">المذاق الملكي</h1>
+        <p style="color: var(--اللون-الذهبي); font-weight: bold; margin-top: 10px;">أصالة الفخامة في كل طبق</p>
+    </header>
+
+    <nav class="categories-nav" id="catNav"></nav>
+
+    <div class="menu-list-container" id="menuContainer"></div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        const data = {
+            pizza: { n: "البيتزا", i: "🍕", items: [
+                {t:"مارجريتا الملكية", d:"صلصة طماطم إيطالية، موزاريلا فاخرة، ريحان طازج", p:"٣٩", img:"images/royal-classic/ph-1702716059239-385baacdabdc.jpg"},
+                {t:"بيبروني هالو", d:"شرائح بيبيروني بقري مقرمشة مع جبن مضاعف", p:"٤٥", img:"images/royal-classic/ph-1628840042765-356cda07504e.jpg"},
+                {t:"دجاج رانش المميز", d:"قطع دجاج مشوية، صوص رانش، بصل أخضر", p:"٤٩", img:"images/royal-classic/ph-1513104890138-7c749659a591.jpg"}
+            ]},
+            burger: { n: "البرجر", i: "🍔", items: [
+                {t:"كلاسيك برجر", d:"لحم أنجوس مشوي، خس، طماطم، صوص أصلي", p:"٣٥", img:"images/royal-classic/ph-1568901346375-23c9450c58cd.jpg"},
+                {t:"ترافل تشيز برجر", d:"جبنة سويسرية، صوص الترافل، فطر مشوي", p:"٤٨", img:"images/royal-classic/ph-1594212699903-ec8a3eca50f5.jpg"}
+            ]},
+            steaks: { n: "الستيك", i: "🥩", items: [
+                {t:"ريب آي ستيك", d:"لحم مشوي فاخر بصوص الفلفل الأسود", p:"١٢٠", img:"images/royal-classic/ph-1600891964599-f61ba0e24092.jpg"},
+                {t:"تندرلوين مدخن", d:"قطعة لحم طرية مع خضار سوتيه", p:"١٤٥", img:"images/royal-classic/prem-1726826532692-120208647946.jpg"}
+            ]},
+            seafood: { n: "البحريات", i: "🐟", items: [
+                {t:"روبيان جامبو", d:"روبيان مشوي بالثوم والزبدة والليمون", p:"٧٥", img:"images/royal-classic/ph-1762631934591-8a9bf09e5dfe.jpg"},
+                {t:"رز صيادية ملكي", d:"رز صيادية مع قطعة سمك كنعد مشوي", p:"٦٠", img:"images/royal-classic/ph-1626238328324-d55282264212.jpg"}
+            ]},
+            pasta: { n: "الباستا", i: "🍝", items: [
+                {t:"فيتوتشيني ألفريدو", d:"باستا إيطالية، دجاج، فطر، كريمة غنية", p:"٤٢", img:"images/royal-classic/ph-1693609929783-f6a1cfd35b41.jpg"},
+                {t:"باستا الروبيان", d:"روبيان طازج، صوص ليمون وثوم ناعم", p:"٥٥", img:"images/royal-classic/ph-1736381734211-5d525872e356.jpg"}
+            ]},
+            appetizers: { n: "المقبلات", i: "🍟", items: [
+                {t:"ديناميت روبيان", d:"روبيان مقلي مقرمش، صوص حار وحلو", p:"٤٥", img:"images/royal-classic/ph-1599487488170-d11ec9c172f0.jpg"},
+                {t:"أصابع موزاريلا", d:"٦ قطع ذهبية مع صوص مارينارا", p:"٢٨", img:"images/royal-classic/ph-1734774924912-dcbb467f8599.jpg"}
+            ]},
+            salads: { n: "السلطات", i: "🥗", items: [
+                {t:"سلطة سيزر", d:"خس روماني، دجاج مشوي، كروتون", p:"٣٤", img:"images/royal-classic/ph-1550304943-4f24f54ddde9.jpg"},
+                {t:"فتوش نضير", d:"خضار طازجة، خبز محمص، دبس رمان", p:"٢٦", img:"images/royal-classic/ph-1540420773420-3366772f4999.jpg"}
+            ]},
+            breakfast: { n: "الفطور", i: "🍳", items: [
+                {t:"شكشوكة عدنية", d:"بيض بطماطم وتوابل عربية طازجة", p:"٢٤", img:"images/royal-classic/ph-1590412200988-a436970781fa.jpg"},
+                {t:"فول مدمس", d:"فول بالزيت الحار، طحينة، تميس", p:"١٨", img:"images/royal-classic/ph-1482049016688-2d3e1b311543.jpg"}
+            ]},
+            desserts: { n: "الحلويات", i: "🍰", items: [
+                {t:"كريب نوتيلا", d:"كريب فرنسي بالفراولة والموز ونوتيلا", p:"٢٨", img:"images/royal-classic/ph-1519676867240-f03562e64548.jpg"},
+                {t:"وافل بلجيكي", d:"وافل ساخن مع آيس كريم فانيليا", p:"٣٢", img:"images/royal-classic/ph-1562376552-0d160a2f238d.jpg"}
+            ]},
+            drinks: { n: "المشروبات", i: "🥤", items: [
+                {t:"قهوة سعودية", d:"دلة قهوة عربية بالهيل والزعفران الفاخر", p:"٢٥", img:"images/royal-classic/prem-1670684184188-bd6ce82fd366.jpg"},
+                {t:"آيس سبانش لاتيه", d:"قهوة مختصة باردة مع حليب مكثف وثلج", p:"٢٠", img:"images/royal-classic/ph-1461023058943-07fcbe16d735.jpg"}
+            ]}
+        };
+
+        function init() {
+            const nav = document.getElementById('catNav');
+            const container = document.getElementById('menuContainer');
+            let isFirst = true;
+
+            for (let key in data) {
+                const btn = document.createElement('div');
+                btn.className = `category-btn ${isFirst ? 'active' : ''}`;
+                btn.id = 'btn-' + key;
+                btn.onclick = () => showCategory(key);
+                btn.innerHTML = `<span>${data[key].i}</span> ${data[key].n}`;
+                nav.appendChild(btn);
+
+                const section = document.createElement('div');
+                section.id = 'sec-' + key;
+                section.className = `menu-section ${isFirst ? 'active' : ''}`;
+                
+                data[key].items.forEach(item => {
+                    section.innerHTML += `
+                        <div class="menu-card" data-aos="fade-up">
+                            <div class="image-container">
+                                <img src="${item.img}" class="card-image" loading="lazy">
+                                <div class="card-price">
+                                    <span class="num">${item.p}</span>
+                                    <span class="unit">ريال</span>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="card-title">${item.t}</h3>
+                                <p class="card-desc">${item.d}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.appendChild(section);
+                isFirst = false;
+            }
+            AOS.init({ duration: 800, once: true });
+        }
+
+        function showCategory(key) {
+            document.querySelectorAll('.menu-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('sec-' + key).classList.add('active');
+            document.getElementById('btn-' + key).classList.add('active');
+            
+            document.getElementById('btn-' + key).scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // اسکرول به بالای لیست بعد از تغییر دسته
+            AOS.refresh();
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>

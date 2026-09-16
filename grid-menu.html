@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة رويال المتجاوبة</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;800;900&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ذهبي: #d4af37;
+            --خلفية: #ffffff;
+            --نص_داكن: #1a1a1a;
+            --رمادي_خفيف: #fcfcfc;
+            --وردي_رويال: #ff0055;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0; background: var(--خلفية);
+            color: var(--نص_داكن); font-family: 'Cairo', sans-serif;
+            overflow-x: hidden; touch-action: pan-y;
+        }
+
+        .header {
+            padding: 25px; text-align: center;
+            background: #fff; position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid #eee;
+        }
+        .header h1 { font-family: 'Tajawal', sans-serif; margin: 0; font-size: 1.6rem; font-weight: 900; }
+
+        .nav-container {
+            padding: 10px 0; background: #fff; border-bottom: 1px solid #eee;
+            position: sticky; top: 82px; z-index: 99;
+            display: flex; justify-content: center;
+        }
+        .nav-wrap {
+            display: flex; overflow-x: auto; padding: 10px; gap: 20px;
+            scrollbar-width: none; -webkit-overflow-scrolling: touch;
+        }
+        .nav-wrap::-webkit-scrollbar { display: none; }
+
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 80px; cursor: pointer; }
+        .nav-img {
+            width: 65px; height: 65px; border-radius: 50%;
+            background: var(--رمادي_خفيف); border: 2px solid transparent;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; transition: 0.3s;
+        }
+        .nav-img img { width: 70%; height: 70%; object-fit: contain; }
+        .nav-item span { font-size: 0.85rem; font-weight: 800; color: #777; font-family: 'Tajawal'; }
+
+        .nav-item.active .nav-img { border-color: var(--وردي_رويال); background: #fff; transform: scale(1.1); }
+        .nav-item.active span { color: var(--وردي_رويال); }
+
+        /* --- تعديل الجريد ليكون 5 أعمدة في الشاشات الكبيرة --- */
+        .container { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); /* للموبايل */
+            gap: 15px; padding: 15px; max-width: 1400px; margin: auto; padding-bottom: 120px;
+            transition: opacity 0.3s ease;
+        }
+
+        @media (min-width: 768px) { .container { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 1024px) { .container { grid-template-columns: repeat(5, 1fr); } } /* 5 تا در هر ردیف */
+
+        .card {
+            background: #fff; border-radius: 20px; overflow: hidden;
+            display: flex; flex-direction: column; box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); }
+
+        .img-box { width: 100%; aspect-ratio: 1/1; background: var(--رمادي_خفيف); border-radius: 20px; overflow: hidden; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .info { padding: 12px 5px; text-align: right; }
+        .info h3 { margin: 0; font-size: 0.95rem; font-weight: 800; color: #333; }
+        .price { margin-top: 6px; font-weight: 900; font-size: 1.1rem; color: var(--نص_داكن); }
+        .price span { font-size: 0.75rem; color: #888; margin-right: 4px; }
+
+        .footer-bar {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 40px); max-width: 600px;
+            background: var(--وردي_رويال); color: #fff; padding: 16px;
+            border-radius: 20px; text-align: center;
+            font-weight: 700; z-index: 1000;
+            box-shadow: 0 10px 30px rgba(255, 0, 85, 0.3);
+        }
+    </style>
+</head>
+<body id="top">
+
+<div class="header">
+    <h1>مطعم رويال الفاخر</h1>
+</div>
+
+<div class="nav-container">
+    <div class="nav-wrap" id="nav"></div>
+</div>
+
+<div class="container" id="list"></div>
+
+<div class="footer-bar">
+    <p>شكراً لزيارتكم، نسعد دائماً بتقديم الأفضل لكم ✨</p>
+</div>
+
+<script>
+    const sections = [
+        { name: "المقبلات", img: "images/grid-menu/fl-2515183.png" },
+        { name: "المشويات", img: "images/grid-menu/fl-1830839.png" },
+        { name: "البحريات", img: "images/grid-menu/fl-2927347.png" },
+        { name: "البيتزا", img: "images/grid-menu/fl-3595455.png" },
+        { name: "البرجر", img: "images/grid-menu/fl-3075977.png" },
+        { name: "المعكرونة", img: "images/grid-menu/fl-3480618.png" },
+        { name: "السلطات", img: "images/grid-menu/fl-2515124.png" },
+        { name: "الحلويات", img: "images/grid-menu/fl-2576762.png" },
+        { name: "المشروبات", img: "images/grid-menu/fl-3126588.png" },
+        { name: "الإفطار", img: "images/grid-menu/fl-887358.png" }
+    ];
+
+    const menuData = {};
+    let currentIndex = 0;
+
+    sections.forEach((sec, idx) => {
+        menuData[sec.name] = [];
+        for(let i=1; i<=10; i++) {
+            menuData[sec.name].push({
+                n: `طبق ${sec.name} ${i}`,
+                p: (Math.random() * 50 + 30).toFixed(0),
+                i: `images/grid-menu/c${idx}-${i}.jpg`
+            });
+        }
+    });
+
+    const listDiv = document.getElementById('list');
+    const navDiv = document.getElementById('nav');
+
+    function render(index) {
+        currentIndex = index;
+        const currentSec = sections[index].name;
+        
+        document.querySelectorAll('.nav-item').forEach((item, i) => {
+            item.classList.toggle('active', i === index);
+            if(i === index) item.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        });
+
+        listDiv.style.opacity = "0";
+        setTimeout(() => {
+            listDiv.innerHTML = menuData[currentSec].map(item => `
+                <div class="card">
+                    <div class="img-box"><img src="${item.i}" loading="lazy"></div>
+                    <div class="info">
+                        <h3>${item.n}</h3>
+                        <div class="price">${item.p} <span>ريال</span></div>
+                    </div>
+                </div>
+            `).join('');
+            listDiv.style.opacity = "1";
+        }, 150);
+    }
+
+    sections.forEach((sec, idx) => {
+        const div = document.createElement('div');
+        div.className = `nav-item ${idx===0?'active':''}`;
+        div.innerHTML = `<div class="nav-img"><img src="${sec.img}"></div><span>${sec.name}</span>`;
+        div.onclick = () => render(idx);
+        navDiv.appendChild(div);
+    });
+
+    render(0);
+</script>
+</body>
+</html>

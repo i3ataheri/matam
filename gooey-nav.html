@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منوی ماجیک</title>
+<style>
+:root {
+    --menu-bg: #ffffff;
+    --body-bg: #0e1621;
+    --accent: #FFD700;
+    --icon-size: 26px;
+    --nav-height: 70px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--body-bg);
+    font-family: 'Vazirmatn', sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.nav-wrapper {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 1000;
+    padding-bottom: env(safe-area-inset-bottom);
+    filter: url('#goo');
+}
+
+.nav {
+    width: 90%;
+    height: var(--nav-height);
+    background: var(--menu-bg);
+    border-radius: 25px 25px 0 0;
+    position: relative;
+}
+
+.nav ul {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    position: relative;
+    height: 100%;
+}
+
+.nav ul li {
+    flex: 1;
+    height: 100%;
+    position: relative;
+}
+
+.nav ul li a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    text-decoration: none;
+    color: #555;
+    transition: 0.5s;
+}
+
+.icon-svg {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    transition: 0.5s;
+}
+
+.text {
+    position: absolute;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #333;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 0.5s;
+}
+
+.list.active a .icon-svg {
+    transform: translateY(-30px);
+    color: var(--accent);
+}
+
+.list.active a .text {
+    opacity: 1;
+    transform: translateY(15px);
+    color: var(--accent);
+}
+
+/* Indicator قطره‌ای */
+.indicator {
+    position: absolute;
+    top: -35px; /* نصف قطره بیرون پنل */
+    width: 16.66%;
+    display: flex;
+    justify-content: center;
+    transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.indicator::after {
+    content: '';
+    width: 60px;
+    height: 60px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 8px var(--menu-bg);
+}
+
+/* موقعیت هر آیتم */
+.list:nth-child(1).active ~ .indicator { right: 0%; }
+.list:nth-child(2).active ~ .indicator { right: 16.66%; }
+.list:nth-child(3).active ~ .indicator { right: 33.32%; }
+.list:nth-child(4).active ~ .indicator { right: 49.98%; }
+.list:nth-child(5).active ~ .indicator { right: 66.64%; }
+.list:nth-child(6).active ~ .indicator { right: 83.3%; }
+</style>
+</head>
+<body>
+
+<div class="nav-wrapper">
+    <div class="nav">
+        <ul>
+            <li class="list active" onclick="move(this)"><a><div class="icon-svg">🏠</div><span class="text">خانه</span></a></li>
+            <li class="list" onclick="move(this)"><a><div class="icon-svg">📄</div><span class="text">صفحه</span></a></li>
+            <li class="list" onclick="move(this)"><a><div class="icon-svg">📖</div><span class="text">سوره</span></a></li>
+            <li class="list" onclick="move(this)"><a><div class="icon-svg">📑</div><span class="text">جزء</span></a></li>
+            <li class="list" onclick="move(this)"><a><div class="icon-svg">⚙️</div><span class="text">تنظیمات</span></a></li>
+            <li class="list" onclick="move(this)"><a><div class="icon-svg">ℹ️</div><span class="text">درباره</span></a></li>
+            <div class="indicator"></div>
+        </ul>
+    </div>
+</div>
+
+<!-- فیلتر gooey -->
+<svg style="display:none;">
+  <defs>
+    <filter id="goo">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+      <feColorMatrix in="blur" mode="matrix" 
+        values="1 0 0 0 0  
+                0 1 0 0 0  
+                0 0 1 0 0  
+                0 0 0 20 -10" result="goo" />
+      <feBlend in="SourceGraphic" in2="goo" />
+    </filter>
+  </defs>
+</svg>
+
+<script>
+function move(el){
+    const lists = document.querySelectorAll('.list');
+    lists.forEach(item => item.classList.remove('active'));
+    el.classList.add('active');
+}
+</script>
+
+</body>
+</html>

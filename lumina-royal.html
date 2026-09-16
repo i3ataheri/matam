@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منيو لومينا رويال المتكامل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --nav-bg: #1e293b;
+            --clr: #facc15;
+            --text-main: #f8fafc;
+            --accent: #06b6d4;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; scroll-behavior: smooth; }
+        body { background: var(--bg); color: var(--text-main); }
+
+        header {
+            height: 250px;
+            background: linear-gradient(rgba(15, 23, 42, 0.7), var(--bg)), 
+                        url('images/lumina-royal/ph-1504674900247-0877df9cc836.jpg');
+            background-size: cover; background-position: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        header h1 { font-family: 'Cairo'; font-size: 2.5rem; color: var(--clr); }
+
+        .nav-wrapper {
+            position: sticky; top: 0; z-index: 1000;
+            width: 100%; display: flex; justify-content: center;
+            height: 110px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px);
+            padding-top: 40px;
+        }
+
+        .navigation {
+            position: relative; width: 95%; max-width: 600px; height: 70px;
+            background: #1e293b; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .indicator {
+            position: absolute; top: -35px; width: 70px; height: 70px;
+            background: var(--clr); border-radius: 50%; border: 6px solid var(--bg);
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 5;
+        }
+        .indicator::before { content: ''; position: absolute; top: 50%; left: -22px; width: 20px; height: 20px; background: transparent; border-top-right-radius: 20px; box-shadow: 1px -10px 0 0 var(--bg); }
+        .indicator::after { content: ''; position: absolute; top: 50%; right: -22px; width: 20px; height: 20px; background: transparent; border-top-left-radius: 20px; box-shadow: -1px -10px 0 0 var(--bg); }
+
+        .nav-scroll {
+            display: flex; overflow-x: auto; scrollbar-width: none;
+            width: 100%; height: 110px; margin-top: -40px; padding-top: 40px; overflow-y: visible;
+        }
+        .nav-scroll::-webkit-scrollbar { display: none; }
+        .nav-scroll ul { display: flex; list-style: none; height: 70px; align-items: center; padding: 0 10px; }
+        .list { position: relative; min-width: 70px; height: 70px; z-index: 10; }
+        .list a { display: flex; justify-content: center; align-items: center; flex-direction: column; width: 100%; height: 100%; text-decoration: none; }
+        .icon { font-size: 1.5rem; transition: 0.5s; color: #fff; line-height: 70px; }
+        .list.active .icon { transform: translateY(-35px); color: #000; }
+        .text { position: absolute; color: var(--clr); font-size: 0.75rem; transition: 0.5s; opacity: 0; transform: translateY(20px); font-weight: bold; }
+        .list.active .text { opacity: 1; transform: translateY(15px); }
+
+        section { scroll-margin-top: 120px; }
+        .content { padding: 20px; width: 100%; max-width: 1100px; margin: 20px auto; }
+        .section-title { font-family: 'Cairo'; color: var(--clr); margin: 30px 0 20px; border-right: 5px solid var(--clr); padding-right: 15px; font-size: 1.8rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .card { background: var(--nav-bg); border-radius: 25px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .card-img { width: 100%; height: 180px; object-fit: cover; }
+        .card-body { padding: 20px; text-align: center; }
+        .card h3 { color: var(--clr); margin-bottom: 8px; }
+        .price { color: var(--accent); font-weight: bold; }
+
+        footer {
+            background: #020617;
+            padding: 50px 30px;
+            margin-top: 50px;
+            border-top: 2px solid var(--nav-bg);
+        }
+        .footer-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            text-align: right; 
+        }
+        .footer-logo { font-family: 'Cairo'; color: var(--clr); font-size: 1.8rem; margin-bottom: 15px; }
+        .footer-item { margin-bottom: 12px; color: #94a3b8; display: flex; align-items: center; gap: 10px; }
+        .footer-item i { color: var(--clr); width: 20px; }
+        .social-icons { display: flex; gap: 20px; margin-top: 20px; }
+        .social-icons a { color: var(--text-main); font-size: 1.4rem; transition: 0.3s; }
+        .social-icons a:hover { color: var(--clr); }
+        .copy { margin-top: 40px; font-size: 0.8rem; color: #334155; border-top: 1px solid #1e293b; padding-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>لومینا رويال</h1>
+        <p>نخبة الأطباق العالمية في مكان واحد</p>
+    </header>
+
+    <div class="nav-wrapper">
+        <div class="navigation" id="navBox">
+            <div class="indicator" id="ind"></div>
+            <div class="nav-scroll" id="navScroll">
+                <ul id="menuItems"></ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="content" id="main-content"></div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">LUMINA ROYAL</div>
+            <div class="footer-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>العنوان: الرياض، حي المروج، شارع الأمير نايف، مطعم لومینا</span>
+            </div>
+            <div class="footer-item">
+                <i class="fas fa-phone"></i>
+                <span>للحجز: 966501234567+</span>
+            </div>
+            <div class="footer-item">
+                <i class="fas fa-envelope"></i>
+                <span>الايميل: info@lumina-royal.com</span>
+            </div>
+            
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-x-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+
+            <div class="copy" style="text-align: center; width: 100%; padding: 20px 0;">
+                © 2026 جميع الحقوق محفوظة لمطعم لومينا رويال - تجربة ملكية لا تُنسى
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const categories = [
+            {n: "برجر", i: "🍔", img: "images/lumina-royal/ph-1571091718767-18b5b1457add.jpg"},
+            {n: "بيتزا", i: "🍕", img: "images/lumina-royal/ph-1513104890138-7c749659a591.jpg"},
+            {n: "باستا", i: "🍝", img: "images/lumina-royal/ph-1546548970-71785318a17b.jpg"},
+            {n: "سلطة", i: "🥗", img: "images/lumina-royal/ph-1512621776951-a57141f2eefd.jpg"},
+            {n: "حلى", i: "🍰", img: "images/lumina-royal/ph-1551024506-0bccd828d307.jpg"},
+            {n: "سوشي", i: "🍣", img: "images/lumina-royal/ph-1579871494447-9811cf80d66c.jpg"},
+            {n: "لحوم", i: "🥩", img: "images/lumina-royal/ph-1544025162-d76694265947.jpg"},
+            {n: "مقبلات", i: "🍟", img: "images/lumina-royal/ph-1541592106381-b31e9677c0e5.jpg"},
+            {n: "قهوة", i: "☕", img: "images/lumina-royal/ph-1509042239860-f550ce710b93.jpg"},
+            {n: "عصائر", i: "🍹", img: "images/lumina-royal/ph-1536935338218-9bca1d2920a1.jpg"}
+        ];
+
+        const myFoods = [
+            // برجر
+            { cat: "برجر", n: "برجر كلاسيك رويال", p: "35", d: "لحم مشوي مع جبنة شيدر وبصل" },
+            { cat: "برجر", n: "برجر دجاج مقرمش", p: "38", d: "صدر دجاج مقلي مع صوص رويال" },
+            { cat: "برجر", n: "برجر ترافل فاخر", p: "55", d: "لحم بقري مع زيت الترافل الأسود" },
+            { cat: "برجر", n: "برجر باربيكيو مدخن", p: "42", d: "لحم مشوي مع صوص الباربيكيو" },
+            { cat: "برجر", n: "ميني برجر بوكس", p: "60", d: "3 قطع متنوعة من اختيارك" },
+            // بيتزا
+            { cat: "بيتزا", n: "مارغريتا إيطالية", p: "40", d: "صلصة طماطم وريحان وجبن موزاريل" },
+            { cat: "بيتزا", n: "بيتزا بيبروني", p: "45", d: "شرائح بيبروني بقري وجبن مضاعف" },
+            { cat: "بيتزا", n: "بيتزا الخضار الطازجة", p: "42", d: "فلفل، زيتون، فطر، وبصل" },
+            { cat: "بيتزا", n: "بيتزا فورماجي", p: "50", d: "أربعة أنواع من الأجبان الفاخرة" },
+            { cat: "بيتزا", n: "بيتزا دجاج رانش", p: "48", d: "قطع دجاج مع صوص الرانش الأبيض" },
+            // باستا
+            { cat: "باستا", n: "فوتشيني ألفريدو", p: "45", d: "باستا بالكريمة والدجاج والفطر" },
+            { cat: "باستا", n: "سباغيتي بولونيز", p: "42", d: "باستا بصلصة اللحم المفروم الإيطالية" },
+            { cat: "باستا", n: "لازانيا رويال", p: "55", d: "طبقات من الباستا واللحم والبشاميل" },
+            { cat: "باستا", n: "بيني أرابياتا", p: "38", d: "باستا حارة بصلصة الطماطم والثوم" },
+            { cat: "باستا", n: "باستا الروبيان", p: "65", d: "باستا مع قطع الروبيان والثوم" },
+            // سلطة
+            { cat: "سلطة", n: "سلطة سيزر", p: "35", d: "خس طازج، صوص سيزر، وخبز محمص" },
+            { cat: "سلطة", n: "سلطة يونانية", p: "32", d: "خضار مع جبنة فيتا وزيتون أسود" },
+            { cat: "سلطة", n: "سلطة الكينوا", p: "40", d: "كينوا مع رمان وخضروات موسمية" },
+            { cat: "سلطة", n: "سلطة الجرجير رويال", p: "30", d: "جرجير، دبس رمان، وجوز" },
+            { cat: "سلطة", n: "فتوش لبناني", p: "28", d: "خضار متنوعة مع خبز مقلي وسماق" },
+            // حلى
+            { cat: "حلى", n: "تشيز كيك توت", p: "30", d: "طبقة بسكويت مع كريمة وتوت" },
+            { cat: "حلى", n: "مولتن كيك شوكلت", p: "35", d: "كيكة دافئة بقلب شوكولاتة سائل" },
+            { cat: "حلى", n: "تيراميسو إيطالي", p: "38", d: "حلوى القهوة الكلاسيكية" },
+            { cat: "حلى", n: "براوني بالآيس كريم", p: "32", d: "قطع براوني مع فانيلا صوص" },
+            { cat: "حلى", n: "كنافة رويال", p: "35", d: "كنافة ساخنة بالجبنة والقشطة" },
+            // سوشي
+            { cat: "سوشي", n: "كاليفورنيا رول", p: "55", d: "8 قطع من الكراب والأفوكادو" },
+            { cat: "سوشي", n: "سلمون نيجيري", p: "60", d: "6 قطع من السلمون الطازج" },
+            { cat: "سوشي", n: "دراغون رول", p: "75", d: "روبيان مقرمش مع طبقة أفوكادو" },
+            { cat: "سوشي", n: "تيمبورا روبيان", p: "65", d: "روبيان مقلي بالطريقة اليابانية" },
+            { cat: "سوشي", n: "طبق ميكس سوشي", p: "120", d: "24 قطعة متنوعة من السوشي" },
+            // لحوم
+            { cat: "لحوم", n: "ستيك ريب آي", p: "135", d: "لحم مشوي فاخر مع صوص الفطر" },
+            { cat: "لحوم", n: "ريش غنم مشوية", p: "95", d: "ريش غنم متبلة بالأعشاب" },
+            { cat: "لحوم", n: "تندرلوين ستيك", p: "145", d: "قطعة لحم طرية جداً مشوية" },
+            { cat: "لحوم", n: "طبق مشاوي مشكل", p: "110", d: "كباب، شيش طاووق، وأوصال" },
+            { cat: "لحوم", n: "دجاج شواية رويال", p: "70", d: "دجاج متبل ببهارات لومينا" },
+            // مقبلات
+            { cat: "مقبلات", n: "ديناميت روبيان", p: "45", d: "روبيان بصلصة حارة ومنعشة" },
+            { cat: "مقبلات", n: "بطاطس بالجبنة", p: "25", d: "بطاطس مقلية مغطاة بالجبن" },
+            { cat: "مقبلات", n: "أصابع الموزاريلا", p: "28", d: "5 قطع مع صلصة المارينارا" },
+            { cat: "مقبلات", n: "حلقات البصل", p: "20", d: "حلقات بصل مقرمشة مع صوص" },
+            { cat: "مقبلات", n: "كبة لحم", p: "30", d: "4 حبات كبة مقلية محشوة" },
+            // قهوة
+            { cat: "قهوة", n: "إسبريسو", p: "15", d: "قهوة مركزة ومحضرة طازجاً" },
+            { cat: "قهوة", n: "كابتشينو", p: "22", d: "إسبريسو مع رغوة حليب كثيفة" },
+            { cat: "قهوة", n: "لاتيه بارد", p: "24", d: "قهوة وحليب مع الثلج" },
+            { cat: "قهوة", n: "سبنش لاتيه", p: "26", d: "حليب مكثف مع قهوة مختصة" },
+            { cat: "قهوة", n: "ڤي 60", p: "28", d: "قهوة مقطرة يدوياً بمذاق نقي" },
+            // عصائر
+            { cat: "عصائر", n: "برتقال طازج", p: "18", d: "عصير طبيعي 100% بدون سكر" },
+            { cat: "عصائر", n: "ليمون نعناع", p: "20", d: "منعش جداً ومحضر يومياً" },
+            { cat: "عصائر", n: "موهيتو فراولة", p: "25", d: "أوراق نعناع، ليمون وفراولة" },
+            { cat: "عصائر", n: "عصير رويال ميكس", p: "28", d: "كوكتيل فواكه استوائية" },
+            { cat: "عصائر", n: "آفوكادو بالعسل", p: "32", d: "أفوكادو طازج مع مكسرات وعسل" }
+        ];
+
+        function init() {
+            const menuUl = document.getElementById('menuItems');
+            const container = document.getElementById('main-content');
+            
+            categories.forEach((cat, i) => {
+                menuUl.innerHTML += `
+                    <li class="list ${i === 0 ? 'active' : ''}" onclick="moveInd(this, ${i})">
+                        <a href="#sec${i}"><span class="icon">${cat.i}</span><span class="text">${cat.n}</span></a>
+                    </li>`;
+
+                const foods = myFoods.filter(f => f.cat === cat.n);
+                let section = `<section id="sec${i}"><h2 class="section-title">${cat.n}</h2><div class="grid">`;
+                
+                foods.forEach(food => {
+                    section += `
+                        <div class="card">
+                            <img src="${cat.img}" class="card-img" alt="${food.n}">
+                            <div class="card-body">
+                                <h3>${food.n}</h3>
+                                <p>${food.d}</p>
+                                <span class="price">SR ${food.p}</span>
+                            </div>
+                        </div>`;
+                });
+                container.innerHTML += section + `</div></section>`;
+            });
+            setTimeout(updateIndicator, 100);
+        }
+
+        function updateIndicator() {
+            const activeItem = document.querySelector('.list.active');
+            const indicator = document.getElementById('ind');
+            const navBox = document.getElementById('navBox');
+            if (activeItem && indicator) {
+                const itemRect = activeItem.getBoundingClientRect();
+                const navRect = navBox.getBoundingClientRect();
+                indicator.style.left = (itemRect.left - navRect.left) + 'px';
+            }
+        }
+
+        function moveInd(elem, index) {
+            document.querySelectorAll('.list').forEach(item => item.classList.remove('active'));
+            elem.classList.add('active');
+            updateIndicator();
+            const navS = document.getElementById('navScroll');
+            navS.scrollTo({ left: elem.offsetLeft - (navS.offsetWidth / 2) + 35, behavior: 'smooth' });
+        }
+
+        window.onload = init;
+        window.onresize = updateIndicator;
+    </script>
+</body>
+</html>

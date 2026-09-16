@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة السفير الملكي - Glass Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            /* --- تحكم هنا في التار والتعتيم --- */
+            --درجة_التار: blur(10px); /* هرچه عدد بیشتر شود، عکس تارتر می‌شود */
+            --درجة_التعتيم: rgba(0, 0, 0, 0.8); /* هرچه 0.8 به 1 نزدیکتر شود، تیره تر می‌شود */
+            
+            --خلفية_بطاقة: rgba(255, 255, 255, 0.15); 
+            --نص_رئيسي: #ffffff;
+            --نص_فرعي: #eeeeee;
+            --لون_التميز: #8e1b1e; 
+            --لون_الذهب: #ffcc33;
+            --حدود: rgba(255, 255, 255, 0.2);
+            --تأثير_الزجاج: blur(20px);
+            --رابط_الخلفية: url('images/royal-glass/ph-1555939594-58d7cb561ad1.jpg');
+        }
+
+        [data-theme="dark"] {
+            --خلفية_بطاقة: rgba(0, 0, 0, 0.5);
+            --درجة_التعتيم: rgba(0, 0, 0, 0.85); /* تیره تر در حالت شب */
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #000;
+            color: var(--نص_رئيسي);
+            margin: 0; padding: 0;
+            min-height: 100vh;
+        }
+
+        /* الطبقة المسؤولة عن تار کردن وتیره کردن عکس */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: var(--رابط_الخلفية);
+            background-size: cover;
+            background-position: center;
+            filter: var(--درجة_التار); /* اعمال تاری */
+            z-index: -2;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--درجة_التعتيم); /* اعمال تیره گی */
+            z-index: -1;
+        }
+
+        .top-controls {
+            position: fixed; top: 20px; left: 20px;
+            display: flex; flex-direction: column; gap: 12px; z-index: 1000;
+        }
+
+        .action-btn {
+            width: 48px; height: 48px;
+            border-radius: 12px; background: var(--لون_التميز);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; border: 1px solid var(--حدود); color: white;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        .sun-icon { display: none; }
+        [data-theme="dark"] .moon-icon { display: none; }
+        [data-theme="dark"] .sun-icon { display: block; }
+
+        .header-area { text-align: center; padding: 60px 20px 30px; position: relative; }
+        .logo-img {
+            width: 100px; height: 100px; border-radius: 50%;
+            border: 3px solid var(--لون_التميز); padding: 3px; margin-bottom: 15px;
+            object-fit: cover;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .container { max-width: 600px; margin: 0 auto; padding: 0 15px; position: relative; }
+
+        .cat-card {
+            background: var(--خلفية_بطاقة);
+            backdrop-filter: var(--تأثير_الزجاج);
+            -webkit-backdrop-filter: var(--تأثير_الزجاج);
+            border-radius: 22px;
+            margin-bottom: 15px;
+            border: 1px solid var(--حدود);
+            transition: all 0.4s ease;
+        }
+        
+        .cat-card.active { 
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--لون_الذهب);
+            transform: translateY(-5px);
+        }
+
+        .cat-main { display: flex; align-items: center; padding: 15px; cursor: pointer; }
+        .cat-info { flex: 1; padding-right: 12px; }
+        .cat-info h2 { margin: 0; font-family: 'Cairo'; font-size: 1.15rem; color: #fff; }
+        .cat-info p { margin: 4px 0 0; font-size: 0.8rem; color: var(--نص_فرعي); }
+        .cat-img { width: 65px; height: 65px; border-radius: 15px; object-fit: cover; border: 1px solid var(--حدود); }
+
+        .items-box {
+            max-height: 0; opacity: 0; overflow: hidden;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .cat-card.active .items-box {
+            max-height: 2000px; opacity: 1;
+            padding-bottom: 15px;
+        }
+
+        .dish { display: flex; justify-content: space-between; align-items: center; padding: 15px 22px; border-bottom: 1px solid var(--حدود); }
+        .dish:last-child { border-bottom: none; }
+        .dish h4 { margin: 0; font-size: 1rem; font-weight: 700; color: #fff; }
+        .dish p { margin: 3px 0 0; font-size: 0.8rem; color: var(--نص_فرعي); }
+        .price { color: var(--لون_الذهب); font-family: 'Cairo'; font-weight: 800; font-size: 1rem; }
+
+        .footer { text-align: center; padding: 40px 0; color: #fff; background: rgba(0,0,0,0.4); backdrop-filter: blur(15px); border-radius: 30px; margin-top: 30px; margin-bottom: 20px; }
+        .social-icons a { color: white; background: var(--لون_التميز); width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; margin: 0 6px; }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <div class="top-controls">
+        <button class="action-btn" onclick="toggleTheme()"><i class="fas fa-moon moon-icon"></i><i class="fas fa-sun sun-icon"></i></button>
+        <button class="action-btn" onclick="controlAll(true)"><i class="fas fa-folder-open"></i></button>
+        <button class="action-btn" onclick="controlAll(false)"><i class="fas fa-folder"></i></button>
+    </div>
+
+    <div class="header-area">
+        <img src="images/royal-glass/ph-1546069901-ba9599a7e63c.jpg" alt="Logo" class="logo-img">
+        <h1 style="font-family: 'Cairo';">مطعم السفير الملكي</h1>
+        <p>فخامة المذاق العربي</p>
+    </div>
+
+    <div class="container" id="menuGrid"></div>
+
+    <div class="container">
+        <footer class="footer">
+            <div><i class="fas fa-map-marker-alt"></i> الرياض، المملكة العربية السعودية</div>
+            <div class="social-icons" style="margin: 20px 0;">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            <div style="font-size: 0.75rem; opacity: 0.7;">&copy; ٢٠٢٦ السفير الملكي</div>
+        </footer>
+    </div>
+
+    <script>
+        const categories = [
+            { t: "المقبلات الباردة", d: "مقبلات شامية طازجة", i: "images/royal-glass/ps-488.jpg", items: [
+                {n: "حمص بالصنوبر", d: "حمص ناعم وزيت زيتون", p: "٢٢ ر.س"},
+                {n: "متبل باذنجان", d: "مشوي مع طحينة", p: "١٨ ر.س"},
+                {n: "تبولة ملكية", d: "بقدونس ورمان", p: "١٥ ر.س"},
+                {n: "ورق عنب", d: "محشو بالأرز والليمون", p: "٢٥ ر.س"},
+                {n: "بابا غنوج", d: "باذنجان وخضار", p: "١٩ ر.س"}
+            ]},
+            { t: "المشويات", d: "لحوم نعيمي على الفحم", i: "images/royal-glass/ps-635.jpg", items: [
+                {n: "كباب لحم", d: "سيخان لحم بلدي", p: "٦٠ ر.س"},
+                {n: "شيش طاووق", d: "دجاج متبل بالزعفران", p: "٥٠ ر.س"},
+                {n: "ریش غنم", d: "٤ قطع فاخرة", p: "٨٥ ر.س"},
+                {n: "مشوي مشكل", d: "كباب، أوصال", p: "٩٥ ر.س"},
+                {n: "عرايس لحم", d: "خبز محشو باللحم", p: "٣٥ ر.س"}
+            ]},
+            { t: "الأطباق الرئيسية", d: "أطباقنا الشعبية الأصيلة", i: "images/royal-glass/ps-292.jpg", items: [
+                {n: "كبسة سعودية", d: "دجاج مع أرز بسمتي", p: "٤٥ ر.س"},
+                {n: "مندی غنم", d: "لحم مطهو في الحفرة", p: "٨٠ ر.س"},
+                {n: "جريش", d: "بالسمن والليمون الأسود", p: "٣٠ ر.س"},
+                {n: "سليق طايفي", d: "أرز بالحليب مع الدجاج", p: "٤٠ ر.س"},
+                {n: "بخاري دجاج", d: "أرز بخاري بالجزر", p: "٣٨ ر.س"}
+            ]},
+            { t: "البيتزا", d: "عجينة إيطالية فرن حطب", i: "images/royal-glass/ps-193.jpg", items: [
+                {n: "مارغريتا", d: "صوص وجبن موزاريلا", p: "٣٥ ر.س"},
+                {n: "بيبروني", d: "بقر وجبن وشيدر", p: "٤٥ ر.س"},
+                {n: "بيتزا خضار", d: "فلفل، فطر، زيتون", p: "٤٠ ر.س"},
+                {n: "بيتزا دجاج", d: "دجاج مع صوص خاص", p: "٥٠ ر.س"},
+                {n: "بيتزا أجبان", d: "٤ أنواع أجبان", p: "٤٨ ر.س"}
+            ]},
+            { t: "الباستا", d: "مكرونة بصوصات غنية", i: "images/royal-glass/ps-493.jpg", items: [
+                {n: "فیتوتشينى", d: "دجاج وكريمة وفطر", p: "٤٨ ر.س"},
+                {n: "لازانيا", d: "طبقات مكرونة باللحم", p: "٥٢ ر.س"},
+                {n: "بينى أرابياتا", d: "صلصة حمراء حارة", p: "٤٠ ر.س"},
+                {n: "سباغيتي", d: "بولونیز كلاسيكي", p: "٤٢ ر.س"},
+                {n: "باستا روبيان", d: "بصوص الكريمة الوردي", p: "٦٠ ر.س"}
+            ]},
+            { t: "المأكولات البحرية", d: "ثمار البحر الطازجة", i: "images/royal-glass/ps-429.jpg", items: [
+                {n: "سلمون مشوي", d: "مع خضار سوتيه", p: "٩٠ ر.س"},
+                {n: "روبيان مشوي", d: "بصلصة الليمون", p: "٧٥ ر.س"},
+                {n: "سمك هامور", d: "فيليه مقلي مقرمش", p: "٦٥ ر.س"},
+                {n: "شوربة بحرية", d: "كريمة ثمار البحر", p: "٣٥ ر.س"},
+                {n: "سمكة حرة", d: "بصلصة حارة وصنوبر", p: "١١٠ ر.س"}
+            ]},
+            { t: "السلطات", d: "خضروات عضوية طازجة", i: "images/royal-glass/ps-102.jpg", items: [
+                {n: "سيزر دجاج", d: "خس وجبن وبارميزان", p: "٣٥ ر.س"},
+                {n: "سلطة يونانية", d: "خيار وطماطم وفيتا", p: "٢٨ ر.س"},
+                {n: "فتوش", d: "خضار وخبز محمص", p: "٢٠ ر.س"},
+                {n: "كينوا بالرمان", d: "كينوا وخضار صحية", p: "٣٨ ر.س"},
+                {n: "سلطة جرجير", d: "دبس رمان وجوز", p: "٢٥ ر.س"}
+            ]},
+            { t: "الحلويات", d: "نكهات حلوة للختام", i: "images/royal-glass/ps-312.jpg", items: [
+                {n: "كنافة نابلسية", d: "بالجبن ساخنة", p: "٢٥ ر.س"},
+                {n: "أم علي", d: "بالحليب والمكسرات", p: "٢٨ ر.س"},
+                {n: "تشيز كيك", d: "بالتوت البري", p: "٣٠ ر.س"},
+                {n: "مولتن كيك", d: "قلب شوكولاتة ذائب", p: "٣٢ ر.س"},
+                {n: "سلطة فواكه", d: "فواكه الموسم", p: "٢٠ ر.س"}
+            ]},
+            { t: "عصائر طبيعية", d: "طبيعية ١٠٠٪ طازجة", i: "images/royal-glass/ps-453.jpg", items: [
+                {n: "برتقال طازج", d: "عصر يدوي يومي", p: "١٥ ر.س"},
+                {n: "ليمون نعناع", d: "منعش وبارد", p: "١٨ ر.س"},
+                {n: "مانجو طبيعي", d: "ثقيل ومنعش", p: "٢٠ ر.س"},
+                {n: "موهيتو توت", d: "توت منعش مع غاز", p: "٢٢ ر.س"},
+                {n: "عصير رمان", d: "رمان طازج بارد", p: "٢٥ ر.س"}
+            ]},
+            { t: "مشروبات ساخنة", d: "أجود أنواع البن", i: "images/royal-glass/ps-431.jpg", items: [
+                {n: "قهوة عربية", d: "دلة مع تمر", p: "٢٥ ر.س"},
+                {n: "كابتشينو", d: "رغوة حليب غنية", p: "١٨ ر.س"},
+                {n: "لاتيه زعفران", d: "نكهة ملكية", p: "٢٢ ر.س"},
+                {n: "إسبريسو", d: "مركز وقوي", p: "١٢ ر.س"},
+                {n: "شاي مغربي", d: "بالنعناع المنعش", p: "١٥ ر.س"}
+            ]}
+        ];
+
+        const grid = document.getElementById('menuGrid');
+        categories.forEach((c, index) => {
+            let dishes = c.items.map(d => `<div class="dish"><div><h4>${d.n}</h4><p>${d.d}</p></div><div class="price">${d.p}</div></div>`).join('');
+            grid.innerHTML += `<div class="cat-card" id="card-${index}"><div class="cat-main" onclick="toggleMenu(${index})"><div class="cat-info"><h2>${c.t}</h2><p>${c.d}</p></div><img src="${c.i}" class="cat-img"></div><div class="items-box">${dishes}</div></div>`;
+        });
+
+        function toggleMenu(index) {
+            const allCards = document.querySelectorAll('.cat-card');
+            const targetCard = document.getElementById(`card-${index}`);
+            const isActive = targetCard.classList.contains('active');
+            allCards.forEach(card => card.classList.remove('active'));
+            if (!isActive) {
+                targetCard.classList.add('active');
+                setTimeout(() => { targetCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 300);
+            }
+        }
+
+        function controlAll(isOpen) {
+            document.querySelectorAll('.cat-card').forEach(card => {
+                if (isOpen) card.classList.add('active');
+                else card.classList.remove('active');
+            });
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            body.setAttribute('data-theme', body.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+        }
+    </script>
+</body>
+</html>

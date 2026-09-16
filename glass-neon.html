@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة 100 صنف - نيون مودرن</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --الأزرق-النيون: #00f3ff; 
+            --الأبيض: #ffffff;
+            --الخلفية: #050508;
+            --زجاج: rgba(255, 255, 255, 0.07);
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: radial-gradient(circle at center, #0a1a1f 0%, #050508 100%);
+            color: var(--الأبيض);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; }
+
+        .title {
+            font-size: 3.5rem;
+            text-align: center;
+            padding: 40px 0;
+            color: var(--الأزرق-النيون);
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+            font-weight: 900;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--زجاج);
+            backdrop-filter: blur(12px);
+            border-radius: 25px;
+            border: 1px solid rgba(0, 243, 255, 0.15);
+            display: flex;
+            padding: 25px;
+            gap: 25px;
+            transition: 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--الأزرق-النيون);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .card-img {
+            width: 200px; 
+            height: 350px; 
+            border-radius: 15px;
+            object-fit: cover;
+            border: 1px solid var(--الأزرق-النيون);
+        }
+
+        .card-content { flex-grow: 1; }
+
+        .category-title {
+            font-size: 1.8rem;
+            color: var(--الأزرق-النيون);
+            margin: 0 0 20px 0;
+            border-bottom: 2px solid rgba(0, 243, 255, 0.2);
+            padding-bottom: 10px;
+            text-align: center;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            align-items: center;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            padding-bottom: 5px;
+        }
+
+        .item-name { color: rgba(255, 255, 255, 0.9); font-size: 0.95rem; }
+
+        .item-price { color: #ffffff; font-weight: 700; font-size: 1.1rem; }
+
+        .footer { text-align: center; margin-top: 60px; padding-bottom: 50px; }
+        .icon {
+            width: 50px; height: 50px;
+            border: 1.5px solid var(--الأزرق-النيون);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            fill: var(--الأزرق-النيون);
+            margin: 0 10px;
+        }
+
+        @media (max-width: 768px) {
+            .menu-grid { grid-template-columns: 1fr; }
+            .card { flex-direction: column; align-items: center; text-align: center; }
+            .card-img { width: 100%; height: 220px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="title">قائمة الطعام الفاخرة</h1>
+
+        <div class="menu-grid">
+            
+            <div class="card">
+                <img src="images/glass-neon/ph-1541529086526-db283c563270.jpg" class="card-img">
+                <div class="card-content">
+                    <h2 class="category-title">المقبلات الباردة</h2>
+                    <div class="item"><span class="item-name">حمص بيروتي</span><span class="item-price">25 SR</span></div>
+                    <div class="item"><span class="item-name">متبل باذنجان</span><span class="item-price">28 SR</span></div>
+                    <div class="item"><span class="item-name">بابا غنوج</span><span class="item-price">28 SR</span></div>
+                    <div class="item"><span class="item-name">تبولة لبنانية</span><span class="item-price">30 SR</span></div>
+                    <div class="item"><span class="item-name">فتوش دبس رمان</span><span class="item-price">30 SR</span></div>
+                    <div class="item"><span class="item-name">ورق عنب بالزيت</span><span class="item-price">35 SR</span></div>
+                    <div class="item"><span class="item-name">سلطة جرجير</span><span class="item-price">25 SR</span></div>
+                    <div class="item"><span class="item-name">لوبيا بالزيت</span><span class="item-price">22 SR</span></div>
+                    <div class="item"><span class="item-name">لبنة بالثوم</span><span class="item-price">20 SR</span></div>
+                    <div class="item"><span class="item-name">صحن زيتون مشكل</span><span class="item-price">15 SR</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+<img src="images/glass-neon/ph-1605908580297-f3e1c02e64ff.jpg" class="card-img" alt="المقبلات الساخنة">                <div class="card-content">
+                    <h2 class="category-title">المقبلات الساخنة</h2>
+                    <div class="item"><span class="item-name">كبة مقلية</span><span class="item-price">35 SR</span></div>
+                    <div class="item"><span class="item-name">سمبوسة لحم</span><span class="item-price">25 SR</span></div>
+                    <div class="item"><span class="item-name">سمبوسة جبن</span><span class="item-price">22 SR</span></div>
+                    <div class="item"><span class="item-name">جوانح دجاج</span><span class="item-price">40 SR</span></div>
+                    <div class="item"><span class="item-name">بطاطا حرة</span><span class="item-price">28 SR</span></div>
+                    <div class="item"><span class="item-name">سجق بدبس الرمان</span><span class="item-price">45 SR</span></div>
+                    <div class="item"><span class="item-name">فطر بالثوم</span><span class="item-price">35 SR</span></div>
+                    <div class="item"><span class="item-name">روبيان بروفنسال</span><span class="item-price">60 SR</span></div>
+                    <div class="item"><span class="item-name">جبنة حلوم مشوية</span><span class="item-price">32 SR</span></div>
+                    <div class="item"><span class="item-name">رقاقات جبنة</span><span class="item-price">25 SR</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="images/glass-neon/ph-1547592166-23ac45744acd.jpg" class="card-img">
+                <div class="card-content">
+                    <h2 class="category-title">الشوربات الفاخرة</h2>
+                    <div class="item"><span class="item-name">شوربة العدس</span><span class="item-price">25 SR</span></div>
+                    <div class="item"><span class="item-name">شوربة الفطر</span><span class="item-price">30 SR</span></div>
+                    <div class="item"><span class="item-name">شوربة الطماطم</span><span class="item-price">28 SR</span></div>
+                    <div class="item"><span class="item-name">شوربة الدجاج</span><span class="item-price">30 SR</span></div>
+                    <div class="item"><span class="item-name">شوربة المأكولات البحرية</span><span class="item-price">55 SR</span></div>
+                    <div class="item"><span class="item-name">شوربة البصل</span><span class="item-price">32 SR</span></div>
+                    <div class="item"><span class="item-name">شوربة الحريرة</span><span class="item-price">35 SR</span></div>
+                    <div class="item"><span class="item-name">شوربة الذرة بالكريمة</span><span class="item-price">28 SR</span></div>
+                    <div class="item"><span class="item-name">شوربة البروكلي</span><span class="item-price">30 SR</span></div>
+                    <div class="item"><span class="item-name">شوربة اليقطين</span><span class="item-price">32 SR</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="images/glass-neon/ph-1544025162-d76694265947.jpg" class="card-img">
+                <div class="card-content">
+                    <h2 class="category-title">أطباق اللحوم</h2>
+                    <div class="item"><span class="item-name">ستيك تندرلوين</span><span class="item-price">185 SR</span></div>
+                    <div class="item"><span class="item-name">ريش غنم فاخرة</span><span class="item-price">140 SR</span></div>
+                    <div class="item"><span class="item-name">موزات غنم</span><span class="item-price">120 SR</span></div>
+                    <div class="item"><span class="item-name">أوزي لحم</span><span class="item-price">95 SR</span></div>
+                    <div class="item"><span class="item-name">لحم بالبرقوق</span><span class="item-price">110 SR</span></div>
+                    <div class="item"><span class="item-name">كفتة بالبندورة</span><span class="item-price">85 SR</span></div>
+                    <div class="item"><span class="item-name">ستيك بصلصة الفلفل</span><span class="item-price">175 SR</span></div>
+                    <div class="item"><span class="item-name">مقلوبة لحم</span><span class="item-price">90 SR</span></div>
+                    <div class="item"><span class="item-name">بيف ستروغانوف</span><span class="item-price">130 SR</span></div>
+                    <div class="item"><span class="item-name">كباب خشخاش</span><span class="item-price">95 SR</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="images/glass-neon/ph-1604908176997-125f25cc6f3d.jpg" class="card-img">
+                <div class="card-content">
+                    <h2 class="category-title">أطباق الدجاج</h2>
+                    <div class="item"><span class="item-name">دجاج مشوي كامل</span><span class="item-price">65 SR</span></div>
+                    <div class="item"><span class="item-name">شيش طاووق</span><span class="item-price">70 SR</span></div>
+                    <div class="item"><span class="item-name">دجاج بالزبدة</span><span class="item-price">75 SR</span></div>
+                    <div class="item"><span class="item-name">كوردون بلو</span><span class="item-price">85 SR</span></div>
+                    <div class="item"><span class="item-name">دجاج مشوي بالثوم</span><span class="item-price">60 SR</span></div>
+                    <div class="item"><span class="item-name">مجبوس دجاج</span><span class="item-price">75 SR</span></div>
+                    <div class="item"><span class="item-name">برياني دجاج</span><span class="item-price">70 SR</span></div>
+                    <div class="item"><span class="item-name">دجاج صيني بالخضار</span><span class="item-price">68 SR</span></div>
+                    <div class="item"><span class="item-name">ستيك دجاج مشوي</span><span class="item-price">72 SR</span></div>
+                    <div class="item"><span class="item-name">دجاج بصلصة الليمون</span><span class="item-price">75 SR</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="images/glass-neon/ph-1519708227418-c8fd9a32b7a2.jpg" class="card-img">
+                <div class="card-content">
+                    <h2 class="category-title">البحريات</h2>
+                    <div class="item"><span class="item-name">سلمون مشوي</span><span class="item-price">130 SR</span></div>
+                    <div class="item"><span class="item-name">روبيان مشوي جامبو</span><span class="item-price">150 SR</span></div>
+                    <div class="item"><span class="item-name">فيليه هامور</span><span class="item-price">110 SR</span></div>
+                    <div class="item"><span class="item-name">سمكة حرة</span><span class="item-price">120 SR</span></div>
+                    <div class="item"><span class="item-name">لوبستر مشوي</span><span class="item-price">220 SR</span></div>
+                    <div class="item"><span class="item-name">باستا السي فود</span><span class="item-price">95 SR</span></div>
+                    <div class="item"><span class="item-name">كلماري مقلي</span><span class="item-price">75 SR</span></div>
+                    <div class="item"><span class="item-name">روبيان ديناميت</span><span class="item-price">65 SR</span></div>
+                    <div class="item"><span class="item-name">فيليه سمك مقلي</span><span class="item-price">85 SR</span></div>
+                    <div class="item"><span class="item-name">مجبوس سمك</span><span class="item-price">95 SR</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="images/glass-neon/ph-1546548970-71785318a17b.jpg" class="card-img">
+                <div class="card-content">
+                    <h2 class="category-title">الباستا والبيتزا</h2>
+                    <div class="item"><span class="item-name">لازانيا بولونيز</span><span class="item-price">75 SR</span></div>
+                    <div class="item"><span class="item-name">فيتوتشيني ألفريدو</span><span class="item-price">70 SR</span></div>
+                    <div class="item"><span class="item-name">سباغيتي كربونارا</span><span class="item-price">68 SR</span></div>
+                    <div class="item"><span class="item-name">بيتزا مارغريتا</span><span class="item-price">55 SR</span></div>
+                    <div class="item"><span class="item-name">بيتزا بيبروني</span><span class="item-price">65 SR</span></div>
+                    <div class="item"><span class="item-name">بيتزا خضار</span><span class="item-price">60 SR</span></div>
+                    <div class="item"><span class="item-name">بيتزا ثمار البحر</span><span class="item-price">85 SR</span></div>
+                    <div class="item"><span class="item-name">بيني ارابياتا</span><span class="item-price">60 SR</span></div>
+                    <div class="item"><span class="item-name">بيتزا باربيكيو دجاج</span><span class="item-price">70 SR</span></div>
+                    <div class="item"><span class="item-name">رافيولي الفطر</span><span class="item-price">75 SR</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="images/glass-neon/ph-1551024506-0bccd828d307.jpg" class="card-img">
+                <div class="card-content">
+                    <h2 class="category-title">الحلويات</h2>
+                    <div class="item"><span class="item-name">تيراميسو إيطالي</span><span class="item-price">45 SR</span></div>
+                    <div class="item"><span class="item-name">كنافة بالجبن</span><span class="item-price">35 SR</span></div>
+                    <div class="item"><span class="item-name">أم علي بالمكسرات</span><span class="item-price">38 SR</span></div>
+                    <div class="item"><span class="item-name">تشيز كيك فراولة</span><span class="item-price">40 SR</span></div>
+                    <div class="item"><span class="item-name">براونيز بالشوكولاتة</span><span class="item-price">35 SR</span></div>
+                    <div class="item"><span class="item-name">فوندو شوكولاتة</span><span class="item-price">50 SR</span></div>
+                    <div class="item"><span class="item-name">بودينغ التمر</span><span class="item-price">42 SR</span></div>
+                    <div class="item"><span class="item-name">سلطة فواكه</span><span class="item-price">30 SR</span></div>
+                    <div class="item"><span class="item-name">آيس كريم مشكل</span><span class="item-price">25 SR</span></div>
+                    <div class="item"><span class="item-name">كريم كراميل</span><span class="item-price">28 SR</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="images/glass-neon/ph-1513558161293-cdaf765ed2fd.jpg" class="card-img">
+                <div class="card-content">
+                    <h2 class="category-title">المشروبات</h2>
+                    <div class="item"><span class="item-name">عصير برتقال طازج</span><span class="item-price">25 SR</span></div>
+                    <div class="item"><span class="item-name">ليمون بالنعناع</span><span class="item-price">22 SR</span></div>
+                    <div class="item"><span class="item-name">موهيتو فراولة</span><span class="item-price">28 SR</span></div>
+                    <div class="item"><span class="item-name">ميلك شيك فانيلا</span><span class="item-price">30 SR</span></div>
+                    <div class="item"><span class="item-name">بيبسي / كولا</span><span class="item-price">10 SR</span></div>
+                    <div class="item"><span class="item-name">عصير بطيخ</span><span class="item-price">25 SR</span></div>
+                    <div class="item"><span class="item-name">آيس تي ليمون</span><span class="item-price">18 SR</span></div>
+                    <div class="item"><span class="item-name">مياه معدنية كبيرة</span><span class="item-price">12 SR</span></div>
+                    <div class="item"><span class="item-name">موهيتو أزرق</span><span class="item-price">28 SR</span></div>
+                    <div class="item"><span class="item-name">كوكتيل إمبراطور</span><span class="item-price">35 SR</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="images/glass-neon/ph-1495474472287-4d71bcdd2085.jpg" class="card-img">
+                <div class="card-content">
+                    <h2 class="category-title">ركن القهوة</h2>
+                    <div class="item"><span class="item-name">قهوة عربية (دلة)</span><span class="item-price">45 SR</span></div>
+                    <div class="item"><span class="item-name">اسبريسو سنجل</span><span class="item-price">18 SR</span></div>
+                    <div class="item"><span class="item-name">كابتشينو</span><span class="item-price">22 SR</span></div>
+                    <div class="item"><span class="item-name">كافيه لاتيه</span><span class="item-price">22 SR</span></div>
+                    <div class="item"><span class="item-name">ميكاتو</span><span class="item-price">20 SR</span></div>
+                    <div class="item"><span class="item-name">قهوة تركية</span><span class="item-price">20 SR</span></div>
+                    <div class="item"><span class="item-name">هوت شوكلت</span><span class="item-price">25 SR</span></div>
+                    <div class="item"><span class="item-name">شاي مغربي</span><span class="item-price">30 SR</span></div>
+                    <div class="item"><span class="item-name">شاي أحمر / أخضر</span><span class="item-price">12 SR</span></div>
+                    <div class="item"><span class="item-name">فلات وايت</span><span class="item-price">24 SR</span></div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="footer">
+            <p style="color: rgba(255,255,255,0.5)">© 2026 جميع الحقوق محفوظة لمطعمك</p>
+        </footer>
+    </div>
+
+</body>
+</html>

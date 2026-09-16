@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منيو ديجيتال | ابتكار الفخامة الرقمية</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Tajawal:wght@300;500;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --الأسود: #0a0a0a;
+            --الرمادي-العميق: #141210;
+            --الأبيض: #ffffff;
+
+            /* الوضع النهاري - ألوان مطعمية دافئة: بيج + أخضر رصين */
+            --خلفية-الموقع: #faf6f0;
+            --خلفية-الكروت: #ffffff;
+            --اللون-الرئيسي: #1f6b4c;
+            --لون-النص: #23211c;
+            --لون-النص-الثانوي: #5c554a;
+            --حدود-الكروت: rgba(31,107,76,0.12);
+        }
+        [data-theme="dark"] {
+            /* الوضع الليلي - فخامة المطاعم: فحمي + ذهبي */
+            --خلفية-الموقع: var(--الأسود);
+            --خلفية-الكروت: var(--الرمادي-العميق);
+            --اللون-الرئيسي: #d9a441;
+            --لون-النص: #f5efe2;
+            --لون-النص-الثانوي: #cfc6b5;
+            --حدود-الكروت: rgba(217,164,65,0.15);
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%;
+            background-color: var(--خلفية-الموقع);
+            color: var(--لون-النص);
+            font-family: 'Tajawal', sans-serif;
+            overflow-x: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .theme-toggle {
+            position: fixed; top: 20px; left: 20px; z-index: 10000;
+            background: var(--اللون-الرئيسي); border: none; width: 45px; height: 45px;
+            border-radius: 50%; cursor: pointer; display: flex; align-items: center;
+            justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .theme-toggle svg { stroke: var(--خلفية-الموقع); }
+
+        #virtual-cursor {
+            position: fixed; width: 24px; height: 24px;
+            z-index: 9999; pointer-events: none;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .cursor-arrow { fill: var(--اللون-الرئيسي); stroke: #000; stroke-width: 1px; }
+
+        #step-1 {
+            height: 100vh; width: 100%;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.6s ease;
+        }
+        .search-container {
+            width: 85%; max-width: 400px; background: var(--خلفية-الكروت); border-radius: 15px;
+            padding: 12px 20px; display: flex; align-items: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid var(--حدود-الكروت);
+        }
+        #typewriter-input {
+            border: none; outline: none; width: 100%; font-size: 18px;
+            color: var(--لون-النص); direction: rtl; font-family: 'Cairo'; background: transparent;
+        }
+
+        #main-content { display: none; opacity: 0; transition: 1s; }
+
+        .brand-intro { text-align: center; margin: 60px 0 40px; padding: 0 5%; }
+        .hero-title { font-family: 'Cairo'; font-size: clamp(1.8rem, 6vw, 3rem); font-weight: 900; color: var(--اللون-الرئيسي); }
+        .hero-subtitle { font-size: 1.5rem; color: var(--لون-النص-الثانوي); font-weight: 500; }
+
+        .services-section { padding: 20px 5%; max-width: 1200px; margin: 0 auto; }
+        .services-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px; margin-bottom: 80px;
+        }
+        .service-card {
+            background: var(--خلفية-الكروت); border: 1px solid var(--حدود-الكروت);
+            padding: 30px; border-radius: 25px; text-align: right; transition: 0.3s;
+        }
+        .service-card:hover { transform: translateY(-8px); border-color: var(--اللون-الرئيسي); }
+        .service-card h3 { color: var(--اللون-الرئيسي); font-family: 'Cairo'; font-size: 1.25rem; }
+
+        /* ===== قسم القوالب ===== */
+        .templates-section { padding: 60px 5%; max-width: 1300px; margin: 0 auto; }
+        .section-title {
+            text-align: center; font-family: 'Cairo'; font-size: clamp(1.7rem, 5vw, 2.6rem);
+            font-weight: 900; color: var(--اللون-الرئيسي); margin-bottom: 10px;
+        }
+        .section-sub { text-align: center; color: var(--لون-النص-الثانوي); margin-bottom: 40px; font-size: 1.1rem; }
+
+        .filter-bar {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 40px;
+        }
+        .filter-btn {
+            border: 2px solid var(--حدود-الكروت); background: var(--خلفية-الكروت);
+            color: var(--لون-النص); padding: 9px 22px; border-radius: 50px;
+            cursor: pointer; font-family: 'Tajawal'; font-weight: 700; transition: 0.3s;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--اللون-الرئيسي); color: var(--خلفية-الموقع); border-color: var(--اللون-الرئيسي);
+        }
+
+        .templates-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 25px;
+        }
+        .template-card {
+            background: var(--خلفية-الكروت); border: 1px solid var(--حدود-الكروت);
+            border-radius: 22px; overflow: hidden; transition: 0.3s; position: relative;
+            display: flex; flex-direction: column;
+        }
+        .template-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.08); border-color: var(--color); }
+        .template-accent { height: 8px; width: 100%; background: var(--color); }
+        .template-body { padding: 22px; display: flex; flex-direction: column; flex-grow: 1; }
+        .template-name { font-family: 'Cairo'; font-size: 1.2rem; font-weight: 800; margin: 0 0 6px; color: var(--color); }
+        .template-desc { font-size: 0.92rem; color: var(--لون-النص-الثانوي); flex-grow: 1; margin-bottom: 18px; line-height: 1.6; }
+        .btn-preview {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 13px; background: var(--color); color: #2a2520; border: none;
+            border-radius: 12px; cursor: pointer; font-family: 'Cairo'; font-weight: 800; font-size: 1rem;
+            transition: 0.3s; text-decoration: none;
+        }
+        .btn-preview:hover { filter: brightness(1.06); transform: scale(1.02); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+
+        /* ===== مودال المعاينة ===== */
+        #previewModal {
+            position: fixed; inset: 0; z-index: 30000; display: none;
+            align-items: center; justify-content: center; background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(6px); padding: 15px;
+        }
+        #previewModal.open { display: flex; }
+        .modal-box {
+            background: #000; border-radius: 24px; padding: 12px;
+            width: 100%; max-width: 400px; height: 80vh; position: relative;
+            display: flex; flex-direction: column; box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+            border: 2px solid var(--color);
+        }
+        .modal-head {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 4px 6px 12px; color: #fff;
+        }
+        .modal-title { font-family: 'Cairo'; font-weight: 800; color: var(--color); }
+        .modal-actions { display: flex; gap: 8px; }
+        .modal-btn {
+            background: rgba(255,255,255,0.12); border: none; color: #fff;
+            padding: 8px 16px; border-radius: 10px; font-family: 'Cairo'; font-weight: 700;
+            font-size: 0.85rem; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-flex;
+        }
+        .modal-btn.full { background: var(--color); color: #000; }
+        .modal-btn:hover { filter: brightness(1.1); }
+        .modal-close { background: #e11d48; color: #fff; }
+        #previewFrame { width: 100%; flex-grow: 1; border: none; border-radius: 14px; background: #fff; }
+
+        /* ===== الأسعار ===== */
+        .pricing-section { padding: 80px 5%; }
+        .pricing-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto;
+        }
+        .notes-container {
+            max-width: 900px; margin: 0 auto 50px; text-align: center;
+            border-right: 4px solid var(--اللون-الرئيسي); padding: 15px; background: rgba(0,0,0,0.03);
+        }
+        [data-theme="dark"] .notes-container { background: rgba(255,255,255,0.04); }
+        .notes-container p { font-size: 1rem; color: var(--لون-النص-الثانوي); }
+        .price-card {
+            background: var(--خلفية-الكروت); border: 1px solid var(--حدود-الكروت);
+            border-radius: 35px; padding: 45px 35px; text-align: center;
+            transition: 0.4s; position: relative; display: flex; flex-direction: column;
+        }
+        .price-card:hover { transform: translateY(-12px); border-color: var(--اللون-الرئيسي); }
+        .price-card.featured { border: 2px solid var(--اللون-الرئيسي); }
+        .badge { background: var(--اللون-الرئيسي); color: var(--خلفية-الكروت); padding: 6px 20px; border-radius: 50px; font-weight: 800; font-size: 0.85rem; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+        .price-value { font-size: 2.8rem; font-weight: 900; color: var(--اللون-الرئيسي); margin: 20px 0; }
+        .daily-cost { color: var(--اللون-الرئيسي); font-weight: bold; margin-bottom: 30px; display: block; }
+        .features-list { list-style: none; padding: 0; margin: 0 0 35px 0; text-align: right; flex-grow: 1; }
+        .features-list li { margin-bottom: 15px; color: var(--لون-النص-الثانوي); display: flex; align-items: flex-start; font-size: 0.95rem; }
+        .features-list .tick { color: var(--اللون-الرئيسي); margin-left: 12px; font-weight: bold; flex-shrink: 0; }
+        .features-list .pro { color: var(--اللون-الرئيسي); font-weight: 700; }
+        .btn-order {
+            display: block; padding: 16px; background: transparent; border: 2px solid var(--اللون-الرئيسي);
+            color: var(--اللون-الرئيسي); text-decoration: none; border-radius: 50px; font-weight: 800; transition: 0.3s;
+        }
+        .btn-order:hover { background: var(--اللون-الرئيسي); color: var(--خلفية-الكروت); }
+
+        footer { padding: 60px 20px; text-align: center; }
+        footer p { color: var(--لون-النص-الثانوي); }
+    </style>
+</head>
+<body data-theme="light">
+
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <svg id="themeIcon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </button>
+
+    <div id="virtual-cursor">
+        <svg class="cursor-arrow" width="24" height="24" viewBox="0 0 24 24">
+            <path d="M7 2l12 11.2l-5.8 0.8l3.6 6l-3 1.8l-3.6-6.2l-3.2 2.4z"/>
+        </svg>
+    </div>
+
+    <div id="step-1">
+        <div class="search-container" id="search-box">
+            <input type="text" id="typewriter-input" readonly>
+            <svg width="22" height="22" id="magnifier" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <div class="brand-intro" data-aos="fade-up">
+            <h1 class="hero-title">تصميم منيو مطعمك.. يبدأ من هنا!</h1>
+            <p class="hero-subtitle">تصفح قوالبنا.. شاهدها حية واختر ما يناسب فخامة مطعمك</p>
+        </div>
+
+        <section class="services-section">
+            <div class="services-grid">
+                <div class="service-card" data-aos="fade-up">
+                    <h3>🎨 تصميم يتجاوز التوقعات</h3>
+                    <p>نبتكر لك هوية بصرية فريدة تعكس فخامة مطعمك وتجذب الأنظار.</p>
+                </div>
+                <div class="service-card" data-aos="fade-up">
+                    <h3>☁️ استضافة سحابية مجانية</h3>
+                    <p>لا تقلق بشأن تكاليف السيرفرات؛ نحن نستضيف منيو مطعمك مجاناً وبأمان تام.</p>
+                </div>
+                <div class="service-card" data-aos="fade-up">
+                    <h3>⚡ سرعة البرق: أقل من ثانية</h3>
+                    <p>تصفح فائق السرعة يضمن عدم انتظار العميل ويزيد من نسبة الطلبات.</p>
+                </div>
+                <div class="service-card" data-aos="fade-up">
+                    <h3>📲 تقنيات NFC و QR مجانية</h3>
+                    <p>نمنحك تكنولوجيا الاتصال القريب ورمز QR مخصص للوصول إلى المنيو بلمسة واحدة.</p>
+                </div>
+                <div class="service-card" data-aos="fade-up">
+                    <h3>🎁 هدية خاصة: ميدالية فاخرة</h3>
+                    <p>احصل على ميدالية أنيقة تحمل شعار مطعمك بجودة عالية مجاناً مع طلبك.</p>
+                </div>
+                <div class="service-card" data-aos="fade-up">
+                    <h3>🔄 تحديثات فورية مرنة</h3>
+                    <p>يمكنك تعديل الأسعار أو إضافة أطباق جديدة في أي وقت وبأسعار مناسبة.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== قسم القوالب ===== -->
+        <section class="templates-section">
+            <h2 class="section-title" data-aos="fade-up">معرض قوالب المنــيو</h2>
+            <p class="section-sub" data-aos="fade-up">اضغط على أي قالب لمعاينته مباشرة داخل الصفحة</p>
+
+            <div class="filter-bar" data-aos="fade-up" id="filterBar"></div>
+
+            <div class="templates-grid" id="templatesGrid"></div>
+        </section>
+
+        <!-- ===== الأسعار ===== -->
+        <section class="pricing-section">
+            <div class="notes-container" data-aos="fade-up">
+                <p>💡 كل باقة أعلى تشمل كل مزايا الباقة السابقة + المزايا الإضافية.</p>
+                <p>⚠️ الباقة الاقتصادية تشمل القوالب البسيطة فقط، ولا تشمل القوالب ذات القوائم المنفصلة.</p>
+                <p>🎨 جميع الألوان، الخطوط، والصور قابلة للتعديل حسب الطلب.</p>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="price-card" data-aos="fade-up">
+                    <h2>الباقة الاقتصادية</h2>
+                    <div class="price-value">299 <span style="font-size:1.2rem;">ريال / سنة</span></div>
+                    <span class="daily-cost">فقط 0.82 هللة في اليوم!</span>
+                    <ul class="features-list">
+                        <li><span class="tick">✓</span>المنيو الرقمي (جوال، كمبيوتر، تابلت)</li>
+                        <li><span class="tick">✓</span>استضافة مجانية سنة كاملة</li>
+                        <li><span class="tick">✓</span>تحديث مجاني مرة واحدة في السنة</li>
+                        <li><span class="tick">✓</span>باركود QR للمنيو مدى الحياة</li>
+                        <li><span class="tick">✓</span>تصنيفات (أقسام) الطعام</li>
+                        <li><span class="tick">✓</span>عرض أسعار الأصناف</li>
+                        <li><span class="tick">✓</span>تصميم اقتصادي بسيط (من القوالب البسيطة)</li>
+                    </ul>
+                    <a href="#" class="btn-order">اطلب الآن</a>
+                </div>
+
+                <div class="price-card featured" data-aos="fade-up">
+                    <div class="badge">الأكثر طلباً</div>
+                    <h2>الباقة الأساسية</h2>
+                    <div class="price-value">365 <span style="font-size:1.2rem;">ريال / سنة</span></div>
+                    <span class="daily-cost">فقط ريال واحد في اليوم!</span>
+                    <ul class="features-list">
+                        <li class="pro"><span class="tick">✓</span>كل مزايا الباقة الاقتصادية</li>
+                        <li><span class="tick">✓</span>تحديث ثلاث مرات في السنة</li>
+                        <li><span class="tick">✓</span>اسم وشعار المطعم</li>
+                        <li><span class="tick">✓</span>صورة لكل صنف</li>
+                        <li><span class="tick">✓</span>وصف لكل صنف</li>
+                        <li><span class="tick">✓</span>إضافة وسائل التواصل الاجتماعي</li>
+                        <li><span class="tick">✓</span>عنوان المطعم (نص)</li>
+                        <li><span class="tick">✓</span>خريطة جوجل (Google Maps)</li>
+                        <li><span class="tick">✓</span>زر/رابط تقييم جوجل داخل المنيو</li>
+                        <li><span class="tick">✓</span>باركود QR لتقييم جوجل</li>
+                        <li><span class="tick">✓</span>رقم الاتصال المباشر</li>
+                    </ul>
+                    <a href="#" class="btn-order">اطلب الآن</a>
+                </div>
+
+                <div class="price-card" data-aos="fade-up">
+                    <h2>الباقة المميزة</h2>
+                    <div class="price-value">549 <span style="font-size:1.2rem;">ريال / سنة</span></div>
+                    <span class="daily-cost">فقط ريال ونصف في اليوم!</span>
+                    <ul class="features-list">
+                        <li class="pro"><span class="tick">✓</span>كل مزايا الباقة الأساسية</li>
+                        <li><span class="tick">✓</span>تحديث حتى 5 مرات في السنة</li>
+                        <li><span class="tick">✓</span>ميدالية ذكية NFC مع شعار مطعمك</li>
+                        <li><span class="tick">✓</span>شريحة NFC مخصصة للمطعم</li>
+                        <li><span class="tick">✓</span>زر الطلب عبر الواتساب (اضافة الطلب)</li>
+                        <li><span class="tick">✓</span>سلة الطلبات + إرسال تلقائي للواتساب</li>
+                        <li><span class="tick">✓</span>وضع ليلي / نهاري (تم داكن)</li>
+                        <li><span class="tick">✓</span>اختيار لون المنيو من عدة ألوان</li>
+                        <li><span class="tick">✓</span>بحث داخل المنيو</li>
+                        <li><span class="tick">✓</span>شريط إعلانات وتنبيهات (عروض وتخفيضات)</li>
+                        <li><span class="tick">✓</span>اختيار الكمية لكل طلب</li>
+                        <li><span class="tick">✓</span>إضافة ملاحظة على الطلب</li>
+                        <li><span class="tick">✓</span>حفظ السلة في ذاكرة الجوال</li>
+                        <li><span class="tick">✓</span>شارات مميزة للأصناف (مقترح الشيف / الأكثر مبيعاً / جديد)</li>
+                        <li><span class="tick">✓</span>زر مشاركة المنيو (واتساب / رسائل)</li>
+                        <li><span class="tick">✓</span>حجز طاولة عبر الواتساب</li>
+                        <li><span class="tick">✓</span>زر الموقع / الاتجاهات</li>
+                        <li><span class="tick">✓</span>تمرير سلس + زر العودة للأعلى</li>
+                    </ul>
+                    <a href="#" class="btn-order">اطلب الآن</a>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2026 منيو ديجيتال - الفخامة في التفاصيل الرقمية</p>
+        </footer>
+    </div>
+
+    <!-- ===== مودال المعاينة ===== -->
+    <div id="previewModal">
+        <div class="modal-box" id="modalBox">
+            <div class="modal-head">
+                <div class="modal-title" id="modalTitle">عرض القالب</div>
+                <div class="modal-actions">
+                    <a class="modal-btn full" id="modalFull" target="_blank" href="#">فتح بالكامل ↗</a>
+                    <button class="modal-btn modal-close" onclick="closePreview()">✕ إغلاق</button>
+                </div>
+            </div>
+            <iframe id="previewFrame" title="معاينة القالب"></iframe>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        const templates = [
+            { file: "asrya-dark-gold.html",  name: "عصريّة ذهبي داكن",    cat: "ذهبي/فاخر",       color: "#b99b6b", desc: "قالب فاخر بتم داكن ولمسات ذهبية ملكية." },
+            { file: "asrya-light-gold.html", name: "عصريّة ذهبي فاتح",    cat: "ذهبي/فاخر",       color: "#c9b080", desc: "نسخة فاتحة أنيقة بعناصر ذهبية راقية." },
+            { file: "asrya-light-red.html",  name: "عصريّة أحمر فاتح",    cat: "ألوان مخصصة",     color: "#cc8273", desc: "قالب فاتح بلكنة حمراء جريئة وواضحة." },
+            { file: "asrya-light-red-bar.html", name: "عصريّة أحمر بشريط", cat: "ألوان مخصصة",    color: "#bf7a6e", desc: "قالب فاتح مع شريط أحمر أسفل الصور." },
+            { file: "classic-dotted.html",   name: "كلاسيك منقّط",       cat: "كلاسيك",          color: "#7a94a8", desc: "تصميم كلاسيكي أنيق بفواصل منقطة داكنة." },
+            { file: "dark-artistic.html",    name: "دارك فني",           cat: "داكن",            color: "#c1956b", desc: "قالب فني داكن بصور زجاجية وحركات سلسة." },
+            { file: "edge-panel-dark.html",  name: "لوحة جانبية داكنة",  cat: "لوحة جانبية",    color: "#87969f", desc: "منيو بنافذة جانبية شفافة وتصنيفات متحركة." },
+            { file: "edge-panel-daynight.html", name: "لوحة جانبية ليل/نهار", cat: "لوحة جانبية", color: "#a997d6", desc: "نفس اللوحة الجانبية مع خاصية الوضع الليلي." },
+            { file: "edge-panel-light.html", name: "لوحة جانبية فاتحة",  cat: "لوحة جانبية",    color: "#aab6c2", desc: "نسخة فاتحة من لوحة التصنيفات الجانبية." },
+            { file: "folder-colorful.html",  name: "مجلد متعدد الألوان", cat: "متعدد الألوان",  color: "#a48fd6", desc: "قوالب على شكل مجلدات مع اختيار لون من 10 ألوان." },
+            { file: "glass-colorful.html",   name: "زجاجي متعدد الألوان", cat: "متعدد الألوان",  color: "#82c3e0", desc: "قالب زجاجي يتيح اختيار لون النص والخلفية." },
+            { file: "glass-neon.html",       name: "زجاجي نيون",         cat: "نيون",            color: "#8fd8dc", desc: "قالب زجاجي داكن بتوهج نيون أزرق." },
+            { file: "golden-glass.html",     name: "ذهبي زجاجي",         cat: "ذهبي/فاخر",       color: "#c2a15c", desc: "قالب ذهبي داكن بتأثير الزجاج الفاخر." },
+            { file: "golden-glass-light.html", name: "ذهبي زجاجي فاتح",  cat: "ذهبي/فاخر",       color: "#d3bb85", desc: "نسخة كريمية فاتحة من القالب الذهبي الزجاجي." },
+            { file: "golden-luxury.html",    name: "ذهبي فاخر",          cat: "ذهبي/فاخر",       color: "#d4bc74", desc: "قالب فخم بصفحات منفصلة لكل قسم (10 خلالات)." },
+            { file: "gooey-nav.html",        name: "تنقل لين",           cat: "حديث",            color: "#e6b46c", desc: "قالب بنافذة تنقل سفلية سائلة بتقنية gooey." },
+            { file: "grid-menu.html",        name: "شبكة متجاوبة",       cat: "حديث",            color: "#e0a3b8", desc: "شبكة أقسام متجاوبة بأيقونات وحركة ناعمة." },
+            { file: "iphone-menu.html",      name: "أسلوب آيفون",        cat: "حديث",            color: "#cbae72", desc: "قالب بأسلوب iOS مع تنقل باللمس والسحب." },
+            { file: "lumina-royal.html",     name: "لومينا رويال",       cat: "حديث",            color: "#8fc9e6", desc: "قالب متكامل بمؤشر متحرك وملف تعريف كامل." },
+            { file: "minimal-pure.html",     name: "مينيمال نقي",        cat: "مينيمال",         color: "#93c79e", desc: "تصميم نظيف هادئ مع شريط عروض متحرك." },
+            { file: "neon-bottom.html",      name: "نيون سفلي",          cat: "نيون",            color: "#a8d8bb", desc: "قالب داكن بشريط نيون أخضر أسفل الشاشة." },
+            { file: "neon-colorful.html",    name: "نيون متعدد الألوان", cat: "نيون",            color: "#e6a9c4", desc: "قالب نيون يمكن تغيير لون التوهج من 9 ألوان." },
+            { file: "ocean-pearl.html",      name: "لؤلؤة المحيط",       cat: "فئة خاصة",        color: "#8ccfd9", desc: "قالب بحري فاتح بموجات وحيّوية منعشة." },
+            { file: "pastel-color.html",     name: "باستيل دافئ",        cat: "ألوان مخصصة",     color: "#a9e0c5", desc: "ألوان باستيل هادئة بمظهر ناعم ودافئ." },
+            { file: "royal-classic.html",    name: "رويال كلاسيك",       cat: "كلاسيك",          color: "#cf8478", desc: "قالب كلاسيكي أحمر-ذهبي بأسعار داخل شارات." },
+            { file: "royal-crystal.html",    name: "رويال كريستال",      cat: "نيون",            color: "#bcd98a", desc: "قالب نيون مع زر عائم للطلب عبر الواتساب." },
+            { file: "royal-flow.html",       name: "رويال فلو",          cat: "حديث",            color: "#9ed9ae", desc: "قالب بكاروسيل أفقي لحركة انسيابية بين الأصناف." },
+            { file: "royal-glass.html",      name: "رويال زجاجي",        cat: "زجاجي",           color: "#8e9cac", desc: "قالب أكورديون زجاجي بوضع ليلي ونهاري." },
+            { file: "royal-glass-2.html",    name: "رويال زجاجي 2",      cat: "زجاجي",           color: "#aab6c1", desc: "نسخة لاحقة بصور مصغرة لكل صنف." },
+            { file: "rustic-nature.html",    name: "ريفي الطبيعة",       cat: "فئة خاصة",        color: "#a3b87a", desc: "قالب بلمسة طبيعية خضراء تلائم المقاهي والاستراحات." },
+            { file: "saudi-romantic.html",   name: "سعودي رومانسي",      cat: "فئة خاصة",        color: "#84bd9e", desc: "قالب أنيق بألوان مستوحاة من العراقة السعودية." },
+            { file: "swipe-menu.html",       name: "قائمة سوَايب",       cat: "حديث",            color: "#e6b183", desc: "قالب يتنقل بين الأصناف بحركة السحب الجانبي." },
+            { file: "tv-display.html",       name: "شاشة تلفاز",         cat: "حديث",            color: "#c4cdd6", desc: "قالب بلوحة جانبية وشريط سفلي لعرض المنيو." },
+            { file: "whatsapp-cart.html",    name: "سلة واتساب",         cat: "طلب/واتساب",     color: "#85cf9d", desc: "قالب بسلة طلبات كاملة وإرسال مباشر للواتساب." },
+        ];
+
+        const categories = [...new Set(templates.map(t => t.cat))];
+
+        function openPreview(file, name, color) {
+            document.getElementById('modalTitle').innerText = name;
+            document.getElementById('modalBox').style.setProperty('--color', color);
+            const frame = document.getElementById('previewFrame');
+            frame.src = file;
+            document.getElementById('modalFull').href = file;
+            document.getElementById('previewModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closePreview() {
+            document.getElementById('previewModal').classList.remove('open');
+            document.getElementById('previewFrame').src = 'about:blank';
+            document.body.style.overflow = '';
+        }
+        document.getElementById('previewModal').addEventListener('click', function (e) {
+            if (e.target === this) closePreview();
+        });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePreview(); });
+
+        function renderFilters() {
+            const bar = document.getElementById('filterBar');
+            let html = `<button class="filter-btn active" data-cat="الكل">الكل</button>`;
+            categories.forEach(c => { html += `<button class="filter-btn" data-cat="${c}">${c}</button>`; });
+            bar.innerHTML = html;
+            bar.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    bar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderGrid(btn.dataset.cat);
+                });
+            });
+        }
+
+        function renderGrid(cat) {
+            const grid = document.getElementById('templatesGrid');
+            const list = cat === 'الكل' ? templates : templates.filter(t => t.cat === cat);
+            grid.innerHTML = list.map(t => `
+                <div class="template-card" style="--color: ${t.color}" data-aos="fade-up">
+                    <div class="template-accent"></div>
+                    <div class="template-body">
+                        <h3 class="template-name">${t.name}</h3>
+                        <p class="template-desc">${t.desc}</p>
+                        <button class="btn-preview" onclick="openPreview('${t.file}', '${t.name}', '${t.color}')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+                            مشاهدة القالب
+                        </button>
+                    </div>
+                </div>`).join('');
+            if (window.AOS) AOS.refresh();
+        }
+
+        renderFilters();
+        renderGrid('الكل');
+
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('themeIcon');
+            if (body.getAttribute('data-theme') === 'light') {
+                body.setAttribute('data-theme', 'dark');
+                icon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+            } else {
+                body.setAttribute('data-theme', 'light');
+                icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+            }
+        }
+
+        const textToType = "كيف أصمم منيو مطعمي؟";
+        const input = document.getElementById("typewriter-input");
+        const magnifier = document.getElementById("magnifier");
+        const cursor = document.getElementById("virtual-cursor");
+        const sBox = document.getElementById("search-box");
+
+        window.onload = () => {
+            const rect = sBox.getBoundingClientRect();
+            cursor.style.left = (rect.left + rect.width/2) + "px";
+            cursor.style.top = (rect.top + rect.height + 30) + "px";
+            setTimeout(typeEffect, 1000);
+        };
+
+        let i = 0;
+        function typeEffect() {
+            if (i < textToType.length) {
+                input.value += textToType.charAt(i);
+                i++;
+                setTimeout(typeEffect, 90);
+            } else {
+                setTimeout(moveAndClick, 500);
+            }
+        }
+
+        function moveAndClick() {
+            const magRect = magnifier.getBoundingClientRect();
+            try {
+                cursor.style.left = (magRect.left + 5) + "px";
+                cursor.style.top = (magRect.top + 5) + "px";
+            } catch (e) {}
+            setTimeout(() => {
+                magnifier.style.stroke = "#111";
+                cursor.style.transform = "scale(0.8)";
+                setTimeout(showSite, 400);
+            }, 700);
+        }
+
+        function showSite() {
+            document.getElementById("step-1").style.opacity = "0";
+            cursor.style.opacity = "0";
+            setTimeout(() => {
+                document.getElementById("step-1").style.display = "none";
+                const main = document.getElementById("main-content");
+                main.style.display = "block";
+                setTimeout(() => {
+                    main.style.opacity = "1";
+                    AOS.init({ duration: 1000, once: true });
+                }, 50);
+            }, 600);
+        }
+    </script>
+</body>
+</html>

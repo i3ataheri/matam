@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رويال منيو - الحركة المرنة</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --accent-color: #00f2ff; 
+            --main-white: #ffffff;
+            --dim-text: #666;
+            --header-h: 260px;
+            /* انیمیشن لرزش نرم مخصوص خط نئون */
+            --bounce-transition: 0.6s cubic-bezier(0.55, -0.55, 0.265, 1.40);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding-top: var(--header-h);
+            background-color: var(--bg-color);
+            font-family: 'Tajawal', sans-serif;
+            color: var(--main-white);
+            scroll-behavior: smooth;
+        }
+
+        /* --- پنل تنظیمات رنگ --- */
+        .color-panel {
+            position: fixed; left: -220px; top: 50%; transform: translateY(-50%);
+            width: 220px; background: rgba(15, 15, 15, 0.98);
+            border: 1px solid var(--accent-color); border-left: none;
+            border-radius: 0 20px 20px 0; z-index: 2000; padding: 25px 15px;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+        }
+        .color-panel.open { left: 0; }
+        .panel-toggle {
+            position: absolute; right: -50px; top: 0; width: 50px; height: 50px;
+            background: var(--accent-color); display: flex; justify-content: center;
+            align-items: center; cursor: pointer; border-radius: 0 12px 12px 0;
+            box-shadow: 5px 0 15px var(--accent-color); font-size: 1.5rem;
+        }
+        .colors-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; justify-items: center; }
+        .color-btn { width: 32px; height: 32px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; }
+        .color-btn.active-color { border-color: white; box-shadow: 0 0 10px white; }
+
+        /* --- الهيدر والمنيو --- */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-h);
+            background: rgba(10, 10, 10, 0.98); backdrop-filter: blur(20px);
+            display: flex; flex-direction: column; justify-content: space-evenly;
+            align-items: center; z-index: 1000; border-bottom: 2px solid #222;
+        }
+
+        .restaurant-title {
+            font-family: 'Cairo', sans-serif; color: var(--accent-color);
+            font-size: 2.5rem; margin: 0; text-shadow: 0 0 20px var(--accent-color);
+        }
+
+        .nav-wrapper {
+            position: relative; width: 100%; max-width: 1100px;
+            height: 100px; display: flex; overflow-x: auto; scrollbar-width: none;
+        }
+        .nav-wrapper::-webkit-scrollbar { display: none; }
+
+        ul { display: flex; list-style: none; padding: 0; margin: 0; position: relative; min-width: 100%; }
+        .item { position: relative; min-width: 100px; height: 100px; z-index: 1; }
+        .item a { display: flex; justify-content: center; align-items: center; flex-direction: column; width: 100%; height: 100%; text-decoration: none; }
+
+        .icon { font-size: 2.2rem; transition: 0.4s; color: var(--dim-text); }
+        .label { color: var(--dim-text); font-weight: 700; font-size: 0.8rem; margin-top: 5px; }
+
+        .item.active .icon { color: var(--accent-color); transform: scale(1.2); filter: drop-shadow(0 0 10px var(--accent-color)); }
+        .item.active .label { color: var(--main-white); }
+
+        /* اصلاح خطوط نئونی با انیمیشن لرزشی */
+        .line-top, .line-bottom {
+            position: absolute; width: 60px; height: 4px; background: var(--accent-color);
+            border-radius: 20px; 
+            transition: var(--bounce-transition); /* اعمال لرزش */
+            box-shadow: 0 0 15px var(--accent-color); right: 0;
+        }
+        .line-top { top: 0; } .line-bottom { bottom: 0; }
+
+        /* --- محتوى الطعام --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .category-section { scroll-margin-top: calc(var(--header-h) + 20px); margin-bottom: 80px; }
+        .category-title { font-family: 'Cairo', sans-serif; font-size: 2.2rem; color: var(--accent-color); border-right: 6px solid var(--accent-color); padding-right: 15px; margin-bottom: 40px; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+        .food-card { background: #111; border: 1px solid #222; border-radius: 20px; overflow: hidden; transition: 0.3s; }
+        .food-card:hover { border-color: var(--accent-color); transform: translateY(-10px); }
+        .food-img { width: 100%; height: 220px; object-fit: cover; }
+        .food-info { padding: 20px; }
+        .price { color: var(--accent-color); font-weight: 900; font-size: 1.3rem; }
+
+        footer { background: #050505; padding: 60px 20px; border-top: 2px solid #111; text-align: center; margin-top: 50px; }
+    </style>
+</head>
+<body>
+
+    <div class="color-panel" id="colorPanel">
+        <div class="panel-toggle" onclick="togglePanel()">🎨</div>
+        <p style="text-align:center; color:white; font-size: 0.8rem;">اختر لون النيون</p>
+        <div class="colors-grid">
+            <div class="color-btn active-color" style="background: #00f2ff;" onclick="changeColor('#00f2ff', this)"></div>
+            <div class="color-btn" style="background: #ff0055;" onclick="changeColor('#ff0055', this)"></div>
+            <div class="color-btn" style="background: #00ff44;" onclick="changeColor('#00ff44', this)"></div>
+            <div class="color-btn" style="background: #ffcc00;" onclick="changeColor('#ffcc00', this)"></div>
+            <div class="color-btn" style="background: #ff00ff;" onclick="changeColor('#ff00ff', this)"></div>
+            <div class="color-btn" style="background: #ffffff;" onclick="changeColor('#ffffff', this)"></div>
+            <div class="color-btn" style="background: #7000ff;" onclick="changeColor('#7000ff', this)"></div>
+            <div class="color-btn" style="background: #ff5e00;" onclick="changeColor('#ff5e00', this)"></div>
+            <div class="color-btn" style="background: #a8ff00;" onclick="changeColor('#a8ff00', this)"></div>
+        </div>
+    </div>
+
+    <header>
+        <div class="brand-box">
+            <h1 class="restaurant-title">مطعم رويال</h1>
+            <p class="restaurant-desc">أفخم الأطباق العالمية بجودة ملكية</p>
+        </div>
+        <nav class="nav-wrapper" id="mainNav">
+            <ul id="navList">
+                <li class="item active" onclick="act(this)"><a href="#burger"><span class="icon">🍔</span><span class="label">برجر</span></a></li>
+                <li class="item" onclick="act(this)"><a href="#pizza"><span class="icon">🍕</span><span class="label">بيتزا</span></a></li>
+                <li class="item" onclick="act(this)"><a href="#pasta"><span class="icon">🍝</span><span class="label">باستا</span></a></li>
+                <li class="item" onclick="act(this)"><a href="#meat"><span class="icon">🥩</span><span class="label">لحوم</span></a></li>
+                <li class="item" onclick="act(this)"><a href="#salad"><span class="icon">🥗</span><span class="label">سلطات</span></a></li>
+                <li class="item" onclick="act(this)"><a href="#sushi"><span class="icon">🍣</span><span class="label">سوشي</span></a></li>
+                <li class="item" onclick="act(this)"><a href="#apps"><span class="icon">🍟</span><span class="label">مقبلات</span></a></li>
+                <li class="item" onclick="act(this)"><a href="#dessert"><span class="icon">🍰</span><span class="label">حلى</span></a></li>
+                <li class="item" onclick="act(this)"><a href="#coffee"><span class="icon">☕</span><span class="label">قهوة</span></a></li>
+                <li class="item" onclick="act(this)"><a href="#drinks"><span class="icon">🍹</span><span class="label">عصائر</span></a></li>
+                <div class="line-top"></div>
+                <div class="line-bottom"></div>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container" id="menu-content"></div>
+
+    <footer>
+        <h2 style="font-family: 'Cairo';">مطعم رويال</h2>
+        <p>📍 المملكة العربية السعودية - الرياض</p>
+        <p>© 2026 جميع الحقوق محفوظة</p>
+    </footer>
+
+    <script>
+        const config = [
+            { id: 'burger', title: 'ركن البرجر', img: 'images/neon-colorful/ph-1568901346375-23c9450c58cd.jpg', items: ["رويال برجر", "ترافل برجر", "دجاج زينجر", "كلاسيك بقري", "مشروم برجر"] },
+            { id: 'pizza', title: 'بيتزا إيطالية', img: 'images/neon-colorful/ph-1513104890138-7c749659a591.jpg', items: ["مارغريتا", "بيبيروني", "بيتزا خضار", "دجاج باربيكيو", "أجبان"] },
+            { id: 'pasta', title: 'باستا فاخرة', img: 'images/neon-colorful/ph-1473093226795-af9932fe5856.jpg', items: ["فيتوتشيني", "لازانيا", "بيني أرابياتا", "سباغيتي", "باستا سلمون"] },
+            { id: 'meat', title: 'لحوم ومشاوي', img: 'images/neon-colorful/ph-1544025162-d76694265947.jpg', items: ["ريب آي ستيك", "مشاوي مشكلة", "ريش غنم", "كفتة بالجبن", "ستيك فيليه"] },
+            { id: 'salad', title: 'سلطات طازجة', img: 'images/neon-colorful/ph-1512621776951-a57141f2eefd.jpg', items: ["سلطة سیزر", "فتوش ملكي", "تبولة رمان", "کینوا صحية", "سلطة یونانية"] },
+            { id: 'sushi', title: 'عالم السوشي', img: 'images/neon-colorful/ph-1579871494447-9811cf80d66c.jpg', items: ["كاليفورنيا", "دراغون رول", "نيجيري سلمون", "تیمبورا روبيان", "فیلا ديلفيا"] },
+            { id: 'apps', title: 'المقبلات', img: 'images/neon-colorful/ph-1541529086526-db283c563270.jpg', items: ["بطاطس بالجبن", "موزاريلا ستيكس", "أجنحة دجاج", "كبة مقلية", "شوربة عدس"] },
+            { id: 'dessert', title: 'الحلويات', img: 'images/neon-colorful/ph-1563729784474-d77dbb933a9e.jpg', items: ["تشيز كيك", "مولتن كيك", "كنافة قشطة", "تيراميسو", "أم علي"] },
+            { id: 'coffee', title: 'القهوة', img: 'images/neon-colorful/ph-1495474472287-4d71bcdd2085.jpg', items: ["إسبريسو", "كابتشينو", "لاتيه", "سبانش لاتيه", "قهوة عربية"] },
+            { id: 'drinks', title: 'عصائر منعشة', img: 'images/neon-colorful/ph-1536935338788-846bb9981813.jpg', items: ["موهيتو فراولة", "برتقال طازج", "ليمون نعناع", "سموذي مانجو", "كوكتيل"] }
+        ];
+
+        function renderMenu() {
+            const container = document.getElementById('menu-content');
+            config.forEach(cat => {
+                let html = `<section id="${cat.id}" class="category-section"><h2 class="category-title">${cat.title}</h2><div class="menu-grid">`;
+                cat.items.forEach((name, i) => {
+                    html += `<div class="food-card"><img src="${cat.img}" class="food-img"><div class="food-info"><h3>${name}</h3><p>مذاق ملكي فاخر.</p><span class="price">${40 + (i*5)} ريال</span></div></div>`;
+                });
+                html += `</div></section>`;
+                container.innerHTML += html;
+            });
+        }
+
+        function togglePanel() { document.getElementById('colorPanel').classList.toggle('open'); }
+        
+        function changeColor(color, btn) {
+            document.documentElement.style.setProperty('--accent-color', color);
+            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active-color'));
+            btn.classList.add('active-color');
+            const activeItem = document.querySelector('.item.active');
+            if(activeItem) updateIndicators(activeItem);
+        }
+
+        const items = document.querySelectorAll('.item');
+        const lines = document.querySelectorAll('.line-top, .line-bottom');
+        const nav = document.getElementById('mainNav');
+
+        function act(e) {
+            items.forEach((i) => i.classList.remove('active'));
+            e.classList.add('active');
+            updateIndicators(e);
+            const scrollPos = e.offsetLeft - (nav.offsetWidth / 2) + (e.offsetWidth / 2);
+            nav.scrollTo({ left: scrollPos, behavior: 'smooth' });
+        }
+
+        function updateIndicators(e) {
+            const p = e.parentElement.getBoundingClientRect();
+            const r = e.getBoundingClientRect();
+            const o = (p.right - r.right) + (e.offsetWidth / 2) - 30;
+            lines.forEach(l => { l.style.transform = `translateX(${-o}px)`; });
+        }
+
+        window.addEventListener('load', () => {
+            renderMenu();
+            setTimeout(() => updateIndicators(document.querySelector('.item.active')), 300);
+        });
+        window.addEventListener('resize', () => updateIndicators(document.querySelector('.item.active')));
+    </script>
+</body>
+</html>
