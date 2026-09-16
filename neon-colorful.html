@@ -169,7 +169,7 @@
             config.forEach(cat => {
                 let html = `<section id="${cat.id}" class="category-section"><h2 class="category-title">${cat.title}</h2><div class="menu-grid">`;
                 cat.items.forEach((name, i) => {
-                    html += `<div class="food-card"><img src="${cat.img}" class="food-img"><div class="food-info"><h3>${name}</h3><p>مذاق ملكي فاخر.</p><span class="price">${40 + (i*5)} ريال</span></div></div>`;
+                    html += `<div class="food-card"><img src="${cat.img}" class="food-img" loading="lazy" decoding="async"><div class="food-info"><h3>${name}</h3><p>مذاق ملكي فاخر.</p><span class="price">${40 + (i*5)} ريال</span></div></div>`;
                 });
                 html += `</div></section>`;
                 container.innerHTML += html;

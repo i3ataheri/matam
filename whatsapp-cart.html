@@ -282,7 +282,7 @@
             items.forEach((item, i) => {
                 grid.innerHTML += `
                     <div class="food-card">
-                        <img src="images/whatsapp-cart/${L[cat+i]||'c0-0.jpg'}" alt="food">
+                        <img src="images/whatsapp-cart/${L[cat+i]||'c0-0.jpg'}" alt="food" loading="lazy" decoding="async">
                         <div class="food-info">
                             <div style="display:flex; justify-content:space-between; align-items:center;">
                                 <h3>${item.n}</h3>

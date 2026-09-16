@@ -186,7 +186,7 @@
             items.forEach((item, i) => {
                 grid.innerHTML += `
                     <div class="food-card">
-                        <img src="images/edge-panel-dark/${L[cat+i]||'c0-0.jpg'}" alt="food">
+                        <img src="images/edge-panel-dark/${L[cat+i]||'c0-0.jpg'}" alt="food" loading="lazy" decoding="async">
                         <div class="food-info">
                             <div class="food-header">
                                 <h3>${item.n}</h3>

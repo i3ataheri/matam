@@ -134,7 +134,7 @@
     </div>
 
     <div class="header-area">
-        <img src="images/royal-glass-2/ph-1546069901-ba9599a7e63c.jpg" alt="Logo" class="logo-img">
+        <img src="images/royal-glass-2/ph-1546069901-ba9599a7e63c.jpg" alt="Logo" class="logo-img" loading="lazy" decoding="async">
         <h1>مطعم السفير الملكي</h1>
         <p>فخامة المذاق العربي</p>
     </div>
@@ -237,7 +237,7 @@
         categories.forEach((c, index) => {
             let dishes = c.items.map(d => `
                 <div class="dish">
-                    <img src="${d.img}" class="dish-img">
+                    <img src="${d.img}" class="dish-img" loading="lazy" decoding="async">
                     <div class="dish-info">
                         <h4>${d.n}</h4>
                         <p>${d.d}</p>

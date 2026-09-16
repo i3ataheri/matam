@@ -229,7 +229,7 @@
                 foods.forEach(food => {
                     section += `
                         <div class="card">
-                            <img src="${cat.img}" class="card-img" alt="${food.n}">
+                            <img src="${cat.img}" class="card-img" alt="${food.n}" loading="lazy" decoding="async">
                             <div class="card-body">
                                 <h3>${food.n}</h3>
                                 <p>${food.d}</p>

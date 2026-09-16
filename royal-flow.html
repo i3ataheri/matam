@@ -197,7 +197,7 @@
                     <div class="swiper-slide">
                         <div class="food-card">
                             <div class="price-circle"><span>45</span><small>SAR</small></div>
-                            <div class="image-box"><img src="${imgUrl}"></div>
+                            <div class="image-box"><img src="${imgUrl}" loading="lazy"></div>
                             <div class="food-info">
                                 <h4>${cat.name} ${i}</h4>
                                 <p>مكونات طازجة مختارة بعناية فائقة لنقدم لك تجربة تذوق لا تُنسى.</p>
@@ -217,6 +217,7 @@
             simulateTouch: true, touchRatio: 1.2, longSwipesMs: 120,
             watchOverflow: true, resistanceRatio: 0.85,
             speed: 300,
+            lazyPreloadPrevNext: 2,
             breakpoints: { 640: { slidesPerView: 2.3 }, 1024: { slidesPerView: 3.5 }, 1440: { slidesPerView: 4.8 } }
         });
 

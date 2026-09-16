@@ -136,7 +136,7 @@
     </div>
 
     <div class="header-area">
-        <img src="images/royal-glass/ph-1546069901-ba9599a7e63c.jpg" alt="Logo" class="logo-img">
+        <img src="images/royal-glass/ph-1546069901-ba9599a7e63c.jpg" alt="Logo" class="logo-img" loading="lazy" decoding="async">
         <h1 style="font-family: 'Cairo';">مطعم السفير الملكي</h1>
         <p>فخامة المذاق العربي</p>
     </div>
@@ -232,7 +232,7 @@
         const grid = document.getElementById('menuGrid');
         categories.forEach((c, index) => {
             let dishes = c.items.map(d => `<div class="dish"><div><h4>${d.n}</h4><p>${d.d}</p></div><div class="price">${d.p}</div></div>`).join('');
-            grid.innerHTML += `<div class="cat-card" id="card-${index}"><div class="cat-main" onclick="toggleMenu(${index})"><div class="cat-info"><h2>${c.t}</h2><p>${c.d}</p></div><img src="${c.i}" class="cat-img"></div><div class="items-box">${dishes}</div></div>`;
+            grid.innerHTML += `<div class="cat-card" id="card-${index}"><div class="cat-main" onclick="toggleMenu(${index})"><div class="cat-info"><h2>${c.t}</h2><p>${c.d}</p></div><img src="${c.i}" class="cat-img" loading="lazy" decoding="async"></div><div class="items-box">${dishes}</div></div>`;
         });
 
         function toggleMenu(index) {

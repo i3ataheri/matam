@@ -246,7 +246,7 @@
             menuData[cat].forEach(item => {
                 view.innerHTML += `
                     <div class="neo-card">
-                        <img src="${item.img}" class="neo-img" alt="${item.t}">
+                        <img src="${item.img}" class="neo-img" alt="${item.t}" loading="lazy" decoding="async">
                         <div class="neo-body">
                             <h3>${item.t}</h3>
                             <p>${item.d}</p>

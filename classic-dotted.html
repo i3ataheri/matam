@@ -158,7 +158,7 @@
                     foods.forEach(food => {
                         sectionHtml += `
                         <div class="food-item">
-                            <img src="${cat.img}" class="food-img" alt="${food.n}">
+                            <img src="${cat.img}" class="food-img" alt="${food.n}" loading="lazy" decoding="async">
                             <div class="food-info">
                                 <div class="food-head">
                                     <span class="food-name">${food.n}</span>
